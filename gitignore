@@ -1,8 +1,0 @@
-# Personal data — never commit these. The server auto-creates empty
-# versions of both on first run, so it's safe to leave them out.
-data.json
-auth.json
-
-# OS/editor clutter
-.DS_Store
-Thumbs.db
