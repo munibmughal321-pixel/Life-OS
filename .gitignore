@@ -1,10 +1,20 @@
-# Personal data — never commit these. The server auto-creates empty
-# versions of both on first run, so it's safe to leave them out.
-data.json
-auth.json
+# Local archive includes older Git history and private runtime files.
+/misc/
 
-# OS/editor clutter
+# Local credentials and application data.
+**/.env
+**/.env.*
+!**/.env.example
+**/auth.json
+**/data.json
+**/*.pem
+**/*.key
+
+# Generated dependencies and build output.
+**/node_modules/
+**/dist/
+**/.vite/
+
+# Machine/editor clutter.
 .DS_Store
 Thumbs.db
-
-
