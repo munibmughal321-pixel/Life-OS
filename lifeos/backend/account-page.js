@@ -1,4 +1,5 @@
 import {exportJSON} from '../native/bridge.js';
+import {rememberName} from './account-name.js';
 import {getClient} from './client.js';
 import {repository} from './repository.js';
 const el=id=>document.getElementById(id),say=text=>{el('accountStatus').textContent=text;};
@@ -29,7 +30,9 @@ try{
 el('profileForm').addEventListener('submit',event=>{
  event.preventDefault();action(event.submitter,async()=>{
   profile=await repo.saveProfile({display_name:el('displayName').value,timezone:el('timezone').value,currency:el('currency').value},profile?.revision??null);
-  say('Cloud profile saved.');
+  rememberName(user.id,profile.display_name);
+  say('Cloud profile saved. Opening dashboard…');
+  location.assign(new URL('dashboard.html',location.href).href);
  });
 });
 el('exportCloud').addEventListener('click',event=>action(event.currentTarget,async()=>{

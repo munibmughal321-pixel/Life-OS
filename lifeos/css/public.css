@@ -6,3 +6,6 @@
 @media(max-width:640px){.site-shell{padding:0 20px}.site-header{height:80px;gap:12px}.brand{font-size:25px}.header-links{gap:16px}.header-links>a:first-child{display:none}.header-links .small{padding:10px 12px;gap:8px;font-size:12px}.hero{grid-template-columns:1fr;padding:44px 0 24px}.hero h1{font-size:76px;margin:22px 0}.hero-description{max-width:360px}.hero-actions .button{padding:14px 16px;gap:14px;font-size:13px}.chrome-scene{max-width:380px;width:100%;justify-self:center}.manifesto{gap:14px;font-size:8px;line-height:1.7}.manifesto-line{display:none}.features{padding:54px 0}.feature-grid{grid-template-columns:1fr 1fr}.feature{padding:20px 16px}.feature h3{font-size:18px}.feature p{font-size:13px}.closing{padding:38px 16px}footer{flex-direction:column;gap:10px;font-size:10px}.account-layout{display:block;min-height:0}.account-card{padding:38px 0;max-width:none}.account-art{display:none}.account-card h1{font-size:40px}.account-notice{margin:22px 0}.back-link{font-size:11px}}
 @media(max-width:360px){.hero h1{font-size:64px}.feature-grid{grid-template-columns:1fr}.header-links{gap:10px}.hero-actions{flex-direction:column}.account-card h1{font-size:34px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Respect hidden state even on flex buttons and account panels. */
+[hidden]{display:none!important}

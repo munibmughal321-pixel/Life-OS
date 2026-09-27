@@ -2,6 +2,11 @@
 
 Use `lifeos/` for application development. `misc/` preserves earlier versions and private local reference material; it is not part of the application or deployment.
 
+## Testing preview and feedback
+
+An Android testing APK has been rebuilt from the current source. Read the [tester guide](docs/TESTING.md) for installation, sample workflows, and feedback instructions. Public sharing is pending a Git-history privacy cleanup; no hosted web link is verified yet. The repository remains private until that cleanup is approved and completed.
+
+Fresh verification on 2026-09-27: web artifact checks, all 24 serial tests, Android compilation, APK signature, and byte-for-byte comparison of all 65 packaged web files passed. Real email/SMTP delivery, native callbacks, physical-phone checks, and iOS compilation remain open. Current account changes add numeric email-code entry and account-specific dashboard names; the hosted confirmation template still needs configuration.
 ## Folder map
 
 - `lifeos/`: active HTML, CSS and JavaScript application, Supabase modules/migrations, Android/iOS projects, tests and Vite build.

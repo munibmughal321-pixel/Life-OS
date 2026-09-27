@@ -15,10 +15,10 @@ test('account forms, email verification, offline errors, and PKCE recovery with 
  const browser=await chromium.launch({channel:'msedge',headless:true});
  try{
   const context=await browser.newContext(),page=await context.newPage(),base='http://127.0.0.1:'+server.address().port;
-  const calls=[],user={id:'00000000-0000-4000-8000-000000000001',email:'test@example.invalid',aud:'authenticated',role:'authenticated',app_metadata:{provider:'email'},user_metadata:{},created_at:new Date().toISOString()};
+  const calls=[],user={id:'00000000-0000-4000-8000-000000000001',email:'test@example.invalid',aud:'authenticated',role:'authenticated',app_metadata:{provider:'email'},user_metadata:{display_name:'Test'},created_at:new Date().toISOString()};
   const payload={sub:user.id,aud:'authenticated',role:'authenticated',exp:Math.floor(Date.now()/1000)+3600};
   const jwt=Buffer.from(JSON.stringify({alg:'HS256',typ:'JWT'})).toString('base64url')+'.'+Buffer.from(JSON.stringify(payload)).toString('base64url')+'.test-signature';
-  let updated=false,allowLogin=false,failLogout=false,signupRateLimited=false;const logoutScopes=[];
+  let updated=false,allowLogin=false,failLogout=false,signupRateLimited=false;const logoutScopes=[];let profile=null,failProfile=false;
   await context.route('https://*.supabase.co/**',async route=>{
    const request=route.request(),u=new URL(request.url());calls.push(u.pathname);
    const errorHeaders={'x-supabase-api-version':'2024-01-01','access-control-expose-headers':'x-supabase-api-version'};
@@ -27,7 +27,19 @@ test('account forms, email verification, offline errors, and PKCE recovery with 
    if(u.pathname.endsWith('/recover'))return route.fulfill({json:{}});
    if(u.pathname.endsWith('/token')&&u.searchParams.get('grant_type')==='pkce')return route.fulfill({json:{access_token:jwt,refresh_token:'mock-only',token_type:'bearer',expires_in:3600,user}});
    if(u.pathname.endsWith('/token')&&allowLogin)return route.fulfill({json:{access_token:jwt,refresh_token:'mock-only',token_type:'bearer',expires_in:3600,user}});
-   if(u.pathname.endsWith('/profiles'))return route.fulfill({json:[]});
+   if(u.pathname.endsWith('/verify')){
+ const body=request.postDataJSON();assert.equal(body.type,'email');assert.equal(body.email,user.email);
+ if(body.token!=='123456')return route.fulfill({status:403,headers:errorHeaders,json:{code:'otp_expired',msg:'Invalid code'}});
+ user.email_confirmed_at=new Date().toISOString();
+ return route.fulfill({json:{access_token:jwt,refresh_token:'mock-only',token_type:'bearer',expires_in:3600,user}});
+}
+if(u.pathname.endsWith('/profiles')){
+ if(request.method()!=='GET'){
+ if(failProfile)return route.fulfill({status:500,json:{message:'Profile save failed'}});
+ profile={...request.postDataJSON(),revision:1};
+ }
+ return route.fulfill({json:profile||[]});
+}
    if(u.pathname.endsWith('/token'))return route.fulfill({status:400,json:{code:'invalid_credentials',msg:'Invalid login credentials'}});
    if(u.pathname.endsWith('/user')){if(request.method()==='PUT')updated=true;return route.fulfill({json:user});}
    if(u.pathname.endsWith('/logout')){logoutScopes.push(u.searchParams.get('scope'));return failLogout?route.fulfill({status:500,json:{msg:'Test logout failed'}}):route.fulfill({status:204,body:''});}
@@ -39,7 +51,7 @@ test('account forms, email verification, offline errors, and PKCE recovery with 
   await page.click('button[type=submit]');assert.equal(calls.length,0,'Mismatched passwords never reach auth');
   await page.fill('#confirmPassword','TestPassword123!');await page.click('button[type=submit]');
   await page.waitForURL('**/verify-email.html');
-  assert.equal(await page.locator('h1').textContent(),'Check your email.');
+  assert.equal(await page.locator('h1').textContent(),'Enter your email code.');
   assert.equal(await page.locator('#resendEmail').isDisabled(),true,'resends have a cooldown');
   await page.setViewportSize({width:390,height:844});
   assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
@@ -47,12 +59,21 @@ test('account forms, email verification, offline errors, and PKCE recovery with 
   const userCalls=calls.filter(path=>path.endsWith('/user')).length;
   await page.click('#checkVerification');
   assert.equal(calls.filter(path=>path.endsWith('/user')).length,userCalls);
-  // A verification link opened in another tab creates a shared verified session.
-  user.email_confirmed_at=new Date().toISOString();
-  const callback=await context.newPage();await callback.goto(base+'/login.html?code=mock-signup-code');
-  await callback.waitForURL('**/dashboard.html');await page.waitForURL('**/dashboard.html');
-  assert.equal(await page.evaluate(()=>sessionStorage.getItem('lifeos-pending-verification')),null);
-  await callback.close();
+  await page.fill('#emailCode','000000');await page.click('#verifyCode');
+ await page.waitForFunction(()=>document.getElementById('verificationStatus').textContent.includes('invalid, expired'));
+ assert.ok(page.url().endsWith('verify-email.html'));
+ await page.fill('#emailCode','123456');await page.click('#verifyCode');await page.waitForURL('**/dashboard.html');
+ await page.waitForFunction(()=>document.getElementById('greetName').textContent.includes('Test'));
+ assert.equal(await page.evaluate(()=>sessionStorage.getItem('lifeos-pending-verification')),null);
+ await page.goto(base+'/account.html');await page.waitForSelector('#profileForm');
+ assert.equal(await page.locator('#retryAccountAction').isVisible(),false);
+ await page.fill('#displayName','Saved Name');
+ failProfile=true;await page.locator('#profileForm button').click();
+ await page.waitForFunction(()=>document.getElementById('accountStatus').textContent.includes('Profile save failed'));
+ assert.ok(page.url().endsWith('account.html'));
+ failProfile=false;await page.locator('#profileForm button').click();await page.waitForURL('**/dashboard.html');
+ await page.waitForFunction(()=>document.getElementById('greetName').textContent.includes('Saved Name'));
+ await page.reload();await page.waitForFunction(()=>document.getElementById('greetName').textContent.includes('Saved Name'));
   await page.goto(base+'/account.html?action=logout');await page.waitForURL('**/login.html?reason=logout');
   // A blocked email is routed to the same page without claiming delivery.
   signupRateLimited=true;
@@ -84,7 +105,7 @@ test('account forms, email verification, offline errors, and PKCE recovery with 
   await page.goto(base+'/login.html');
   await page.screenshot({path:'tests/visual-phase3-login.png',fullPage:true});
   allowLogin=true;
-  const login=async()=>{await page.goto(base+'/login.html');await page.fill('#email',user.email);await page.fill('#password','TestPassword123!');await page.click('button[type=submit]');await page.waitForURL('**/account.html');await page.waitForSelector('#logout');};
+  const login=async()=>{await page.goto(base+'/login.html');await page.fill('#email',user.email);await page.fill('#password','TestPassword123!');await page.click('button[type=submit]');await page.waitForURL('**/dashboard.html');await page.goto(base+'/account.html');await page.waitForSelector('#logout');};
   await login();
   await page.evaluate(()=>localStorage.setItem('local-record-test','preserve'));
   await page.goto(base+'/dashboard.html');
@@ -100,6 +121,8 @@ test('account forms, email verification, offline errors, and PKCE recovery with 
   await page.waitForURL('**/login.html?reason=logout');
   await page.waitForFunction(()=>document.getElementById('formStatus').textContent.includes('logged out'));
   await page.goto(base+'/dashboard.html');
+  await page.waitForSelector('#greetName');
+  assert.equal((await page.locator('#greetName').textContent()).includes('Saved Name'),false,'Signed-out dashboard must not show the account name');
   await page.locator('[data-screen="me"]').click();
   assert.equal(await page.getByRole('link',{name:'Log out',exact:true}).count(),2);
   await context.close();

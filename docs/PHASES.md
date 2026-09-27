@@ -148,3 +148,7 @@ Added native projects, SQLite adapters, protected native auth storage, native ex
 ### 2026-09-27 — Android build handoff
 
 Installed Windows Android tooling and built the APK on September 25; rechecked the identical artifact on September 27. Fixed lint findings in permission-revocation handling, reboot receiver filtering, backup/transfer exclusions and local SDK configuration. Build, signature verification, lint (zero errors, 15 nonblocking warnings) and all five native adapter tests pass. The APK is ready for the user's deferred phone test. iOS compilation and physical acceptance remain open.
+
+## 2026-09-27 user-testing checkpoint
+
+Prepared the latest Android testing preview and tester/feedback guide: [TESTING.md](TESTING.md). Fresh serial tests and native packaging checks passed. Public publication remains blocked on approved cleanup of a historical credential file; web hosting is not verified. Phases 5/6 remain in testing preparation, not production acceptance.

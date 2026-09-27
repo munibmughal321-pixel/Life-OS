@@ -84,3 +84,6 @@ For data loss, pause affected writes, preserve the failed database/local state, 
 ## Local validation - 2026-09-27
 
 Before the requested GitHub source update, npm run build:deploy passed (65 files and nine HTML pages), npm test passed 24 tests across ten sequential files, and npm audit --omit=dev --audit-level=high reported zero vulnerabilities. No hosted deployment, real email round trip, store publication or physical-device acceptance was performed by these checks.
+## 2026-09-27 testing-preview preparation
+
+See [TESTING.md](TESTING.md) for user-facing progress and feedback instructions. Deployment build, the final serial 24-test suite, Android rebuild, signature verification, and 65 packaged-asset comparisons passed. A public Android preview is prepared, but repository visibility is blocked by an old committed password-verification file pending approved history cleanup. The Netlify browser session could not be accessed; no hosted web link is verified. This testing-preview request does not mark production release gates complete.

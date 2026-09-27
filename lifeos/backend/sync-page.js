@@ -1,4 +1,5 @@
 import {exportJSON} from '../native/bridge.js';
+import {savedName,rememberName} from './account-name.js';
 import {getClient} from './client.js';
 import {syncRemote} from './sync-remote.js';
 import {synchronize} from './sync-engine.js';
@@ -26,13 +27,13 @@ cloud.ready=(async()=>{
  // The remembered ID routes LOCAL storage only; every cloud request still verifies Auth.
  // This permits offline reopening after a token expires, without pretending it is valid.
  const remembered=localStorage.getItem(LAST_WORKSPACE);
- let id=remembered||undefined;
+ let id=remembered||undefined,accountUser;
  if(navigator.onLine){
   let timeout;
   try{
    const {data,error}=await Promise.race([client.auth.getSession(),new Promise((_,reject)=>{timeout=setTimeout(()=>reject(Error('Session check timed out. Reconnect and reload; saved records remain untouched.')),8000);})]);
    if(error)throw error;
-   if(data.session?.user?.id)id=data.session.user.id;
+   if(data.session?.user?.id){accountUser=data.session.user;id=accountUser.id;}
    else cloud.sessionUnavailable=!!remembered;
   }catch{
    // Auth availability controls cloud work, not access to already-saved local data.
@@ -43,6 +44,16 @@ cloud.ready=(async()=>{
  if(id&&!/^[0-9a-f-]{36}$/i.test(id)){localStorage.removeItem(LAST_WORKSPACE);id=undefined;cloud.sessionUnavailable=false;}
  if(id)localStorage.setItem(LAST_WORKSPACE,id);else localStorage.removeItem(LAST_WORKSPACE);
  cloud.owner=id||null;cloud.databaseName=id?'lifeos-account-'+id:'lifeos-local';
+ cloud.displayName=id?savedName(id)||accountUser?.user_metadata?.display_name||'':'';
+ // Fetch identity separately from optional tracker sync; never delay offline startup.
+ if(accountUser){
+  client.from('profiles').select('display_name').eq('user_id',id).maybeSingle().then(({data,error})=>{
+   if(error||cloud.locked)return;
+   cloud.displayName=data?.display_name||cloud.displayName;
+   rememberName(id,cloud.displayName);
+   if(typeof window.renderHeader==='function')window.renderHeader();
+  }).catch(()=>{});
+ }
  client.auth.onAuthStateChange((_event,session)=>{
   const active=session?.user?.id||null;
   if(active===cloud.owner){cloud.sessionUnavailable=false;return;}

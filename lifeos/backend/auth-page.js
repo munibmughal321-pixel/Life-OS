@@ -39,7 +39,7 @@ try{
   if(reason==='switch')say('Sign in with another account. Device-local dashboard records are shared on this browser and remain separate from cloud accounts.');
   else if(reason==='logout')say('You are logged out on this browser. Device-local dashboard records remain available.');
   const {data}=await client.auth.getUser();
-  if(data.user)location.replace(destination(initialParams.has('code')?'verify-email.html':'account.html'));
+  if(data.user)location.replace(destination(initialParams.has('code')?'verify-email.html':'dashboard.html'));
  }
 }catch(error){submit.disabled=true;say(error.message||'Accounts are unavailable.');}
 form.addEventListener('submit',async event=>{
@@ -59,7 +59,7 @@ form.addEventListener('submit',async event=>{
   }else response=await client.auth.updateUser({password});
   if(response.error)throw response.error;
   clearPasswords();
-  if(mode==='login'||(mode==='signup'&&response.data.session))location.assign(destination('account.html'));
+  if(mode==='login'||(mode==='signup'&&response.data.session))location.assign(destination('dashboard.html'));
   else if(mode==='signup'){rememberVerification(email);location.assign(destination('verify-email.html'));}
   else if(mode==='forgot-password')say('If this address is eligible, a reset link will arrive. Open it in this browser.');
   else{await client.auth.signOut();recovery=false;say('Password updated. Return to Log in.');}

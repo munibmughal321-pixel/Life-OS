@@ -32,7 +32,8 @@ function arcPath(cx,cy,r,a0,a1,color){
 function renderHeader(){
   const h = new Date().getHours();
   const greeting = h<5?"Still up":h<12?"Good Morning":h<17?"Good Afternoon":h<21?"Good Evening":"Good Night";
-  document.getElementById('greetName').textContent = state.profile.name ? `${greeting}, ${state.profile.name}` : greeting;
+  const displayName=window.LifeOSCloud?.displayName||state.profile.name;
+  document.getElementById('greetName').textContent = displayName ? `${greeting}, ${displayName}` : greeting;
   document.getElementById('dateLabel').textContent = new Date().toLocaleDateString([], {weekday:'long', month:'long', day:'numeric'});
   document.getElementById('backBtn').style.display = (currentScreen==='deen') ? 'block' : 'none';
   document.getElementById('arcWrap').style.display = currentScreen === 'dashboard' ? 'flex' : 'none';

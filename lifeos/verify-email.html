@@ -6,14 +6,17 @@
 </head><body class="account-page"><div class="site-shell">
 <header class="site-header"><a class="brand" href="index.html">LifeOS</a><a href="login.html">Log in</a></header>
 <main class="account-layout"><section class="account-card" aria-labelledby="verificationTitle">
-<p class="eyebrow">ONE MORE STEP</p><h1 id="verificationTitle">Check your email.</h1>
-<p>Open the confirmation link in your inbox or spam folder. Use the same browser where you signed up. Once your verified session is ready, LifeOS will open automatically.</p>
+<p class="eyebrow">ONE MORE STEP</p><h1 id="verificationTitle">Enter your email code.</h1>
+<p>Enter the code from your signup email. Once verified, your dashboard opens automatically.</p>
 <p id="verificationStatus" class="form-status" role="status" aria-live="polite"></p>
 <form id="resendForm"><div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required></div>
 <button id="resendEmail" type="submit" class="button primary full">Resend verification email</button></form>
 <p id="resendTimer" role="status"></p>
-<button id="checkVerification" class="button full" type="button">I verified my email — check again</button>
-<p>Verified on another browser or device? <a href="login.html">Log in here</a>.</p>
+<form id="codeForm"><div class="field"><label for="emailCode">Email verification code</label><input id="emailCode" name="token" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,10}" minlength="6" maxlength="10" required aria-describedby="codeHelp"></div>
+<p id="codeHelp">Use the newest code in your inbox or spam folder.</p>
+<button id="verifyCode" type="submit" class="button primary full">Verify and open dashboard</button></form>
+<button id="checkVerification" class="button full" type="button">Check verification status</button>
+<p>Already verified? <a href="login.html">Log in here</a>.</p>
 <p>Wrong address? <a href="signup.html">Return to signup</a>.</p>
 </section></main></div><script type="module" src="backend/verify-email.js"></script><script type="module" src="native/runtime.js"></script>
 </body></html>
