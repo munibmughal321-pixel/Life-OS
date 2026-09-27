@@ -1,6 +1,6 @@
 # Phase 6 — release preparation and deployment
 
-Updated: 2026-09-27. Status: local web release preparation in progress; no hosted site or public release yet.
+Updated: 2026-09-27. Status: repository and Android testing prerelease are public; Netlify site created, CLI authorization/upload and live web checks pending.
 
 ## What is implemented
 

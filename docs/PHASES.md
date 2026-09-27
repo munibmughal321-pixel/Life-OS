@@ -11,7 +11,7 @@ Updated: 2026-09-27. See [PRD.md](PRD.md), [ARCHITECTURE.md](ARCHITECTURE.md), a
 | 3. Backend and accounts | Backend/account implementation and recorded live isolation tests complete; real email callbacks and redirect verification remain |
 | 4. Frontend-backend integration | Browser implementation complete; automated local/mocked transport and live SQL checks pass; real two-device and phone acceptance remain |
 | 5. Android and iPhone | Android debug APK built, signature verified and lint passed; iOS compilation and device acceptance remain |
-| 6. Release/deployment | Build groundwork present; public readiness pending |
+| 6. Release/deployment | Public repository and Android testing prerelease available; Netlify upload/live checks pending; production acceptance remains open |
 
 Later-phase groundwork does not complete the phase or bypass earlier gates. Normal order is 1 through 6. Test continuously; Phase 2 browser durability checks have passed, while real-device certification remains later work. Mark completion only with acceptance evidence.
 

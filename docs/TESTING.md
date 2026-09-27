@@ -4,13 +4,13 @@ LifeOS is a personal organizer for activities, sleep, goals, learning, finances,
 
 ## Download status
 
-An Android debug APK is prepared for the 2026-09-27 preview. Public distribution is pending removal of a historical credential file from Git history. Until the repository is public and the release is published, links are accessible only to authorized repository users.
+The [Android testing preview](https://github.com/munibmughal321-pixel/Life-OS/releases/tag/v0.1.0-preview.20260927) is public. [Download the APK](https://github.com/munibmughal321-pixel/Life-OS/releases/download/v0.1.0-preview.20260927/LifeOS-preview-2026-09-27.apk). The release includes a SHA-256 checksum.
 
-The release will be listed at https://github.com/munibmughal321-pixel/Life-OS/releases. There is no verified hosted web link yet. iPhone installation is not available; iOS source exists but has not been compiled and accepted on a device.
+The release is listed at https://github.com/munibmughal321-pixel/Life-OS/releases. There is no verified hosted web link yet. iPhone installation is not available; iOS source exists but has not been compiled and accepted on a device.
 
 ## Android installation
 
-1. Download the LifeOS preview APK from this repository's release assets when published. Android 7.0 or later is the build's minimum target; that does not mean every supported phone has been tested.
+1. Download the LifeOS preview APK from this repository's release assets . Android 7.0 or later is the build's minimum target; that does not mean every supported phone has been tested.
 2. Open the APK. Android may ask you to allow installation from the browser/file manager you used. Allow that source only if you trust this release, then turn the permission off after installation.
 3. Open LifeOS and start with the device-only dashboard. Use sample records while testing.
 4. Export a backup before replacing an older installation. An incompatible signing certificate can prevent an update; uninstalling removes local data, so do not uninstall without a backup you have verified.
@@ -30,7 +30,7 @@ This APK is debug-signed for testing, not a Play Store release. Phone behavior, 
 
 ## Send feedback
 
-Use https://github.com/munibmughal321-pixel/Life-OS/issues/new/choose after the repository is public (GitHub sign-in required). If you do not use GitHub, send these details directly to the person who shared LifeOS:
+Use https://github.com/munibmughal321-pixel/Life-OS/issues/new/choose (GitHub sign-in required). If you do not use GitHub, send these details directly to the person who shared LifeOS:
 
 - Phone model and Android version, or browser/version.
 - Preview version/date.

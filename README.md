@@ -4,7 +4,7 @@ Use `lifeos/` for application development. `misc/` preserves earlier versions an
 
 ## Testing preview and feedback
 
-An Android testing APK has been rebuilt from the current source. Read the [tester guide](docs/TESTING.md) for installation, sample workflows, and feedback instructions. Public sharing is pending a Git-history privacy cleanup; no hosted web link is verified yet. The repository remains private until that cleanup is approved and completed.
+An Android testing APK has been rebuilt from the current source. Read the [tester guide](docs/TESTING.md) for installation, sample workflows, and feedback instructions. The repository and [Android APK preview](https://github.com/munibmughal321-pixel/Life-OS/releases/tag/v0.1.0-preview.20260927) are public. Netlify setup is in progress; a hosted web URL has not yet passed verification.
 
 Fresh verification on 2026-09-27: web artifact checks, all 24 serial tests, Android compilation, APK signature, and byte-for-byte comparison of all 65 packaged web files passed. Real email/SMTP delivery, native callbacks, physical-phone checks, and iOS compilation remain open. Current account changes add numeric email-code entry and account-specific dashboard names; the hosted confirmation template still needs configuration.
 ## Folder map
@@ -25,7 +25,7 @@ Phases 1 through 4 have browser implementations:
 - Supabase accounts, private profiles/records and account management.
 - Separate device/account workspaces with explicit opt-in cloud synchronization, revisions, tombstones and conflict review.
 
-Phase 5 adds Capacitor native adapters and Android/iOS source. The Android debug APK has been built and verified; physical-phone testing and iOS compilation remain outstanding. Phase 6 includes Netlify configuration and release-artifact checks; hosted deployment and public release remain pending. A GitHub Actions workflow is preserved locally, but uploading it requires the GitHub login to grant workflow permission.
+Phase 5 adds Capacitor native adapters and Android/iOS source. The Android debug APK has been built and verified; physical-phone testing and iOS compilation remain outstanding. Phase 6 includes Netlify configuration and release-artifact checks; hosted deployment remains pending; the Android prerelease is available for testing. A GitHub Actions workflow is preserved locally, but uploading it requires the GitHub login to grant workflow permission.
 
 Run and test from `D:\Munib\LifeOS app\lifeos`:
 

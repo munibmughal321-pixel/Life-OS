@@ -55,3 +55,6 @@ lifeos/tests/phase4-build.log
 # Local native verification output.
 lifeos/native-build.log
 lifeos/native-tests.log
+
+# Local Netlify CLI site metadata and generated state.
+**/.netlify/
