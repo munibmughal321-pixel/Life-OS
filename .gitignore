@@ -14,7 +14,44 @@
 **/node_modules/
 **/dist/
 **/.vite/
+**/supabase/.temp/
+**/supabase/.branches/
 
 # Machine/editor clutter.
 .DS_Store
 Thumbs.db
+
+# Generated browser verification screenshots.
+lifeos/tests/visual-*.png
+lifeos/tests/phase-handoff-desktop.png
+
+# Private LifeOS backup/recovery exports.
+**/lifeos-backup-*.json
+**/lifeos-raw-recovery-*.json
+**/lifeos-previous-recovery-*.json
+
+# Private cloud exports and test fixtures.
+**/lifeos-cloud-backup*.json
+**/.phase3-test-*.json
+**/test-results/
+**/playwright-report/
+
+# Generated sync diagnostics and private conflict exports.
+lifeos/tests/phase4-build.log
+**/lifeos-conflict-copies.json
+
+# Native generated outputs, local SDK paths and signing material.
+**/.gradle/
+**/build/
+**/local.properties
+**/DerivedData/
+**/Pods/
+**/xcuserdata/
+**/*.jks
+**/*.keystore
+**/*.p12
+**/*.mobileprovision
+
+# Local native verification output.
+lifeos/native-build.log
+lifeos/native-tests.log

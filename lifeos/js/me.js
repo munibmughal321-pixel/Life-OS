@@ -2,7 +2,7 @@
 function renderMe(){
   const ci = latestCheckin();
   const hs = healthScore();
-  let html = '';
+  let html = '<section class="card"><h2>Account</h2><p>Manage your cloud account or sign in as someone else. This device’s local records remain available independently of sign-in.</p><div class="dashboard-account-actions"><a class="btn btn-outline" href="account.html">Your account</a><a class="btn btn-outline" href="account.html?action=switch">Switch account</a><a class="btn btn-outline" href="account.html?action=logout">Log out</a></div></section>';
 
   html += `<div class="section-title">Health Score</div><div class="card health-ring-wrap">
     ${circularProgress(hs!==null?hs:0, 90, hs!==null?(hs>=70?'var(--green)':hs>=40?'var(--gold)':'var(--red)'):'var(--faint)', hs!==null?hs:'—')}
@@ -13,28 +13,29 @@ function renderMe(){
 
   html += `<div class="section-title">Daily Check-in</div><div class="card">
     <div class="field-row">
-      <div class="field"><label>Weight (kg)</label><input type="number" id="ciWeight" value="${ci?ci.weight:70}"></div>
-      <div class="field"><label>Energy (1-10)</label><input type="number" id="ciEnergy" min="1" max="10" value="${ci?ci.energy:5}"></div>
+      <div class="field"><label>Weight (kg)</label><input type="number" id="ciWeight" min="1" max="500" step="0.1" required value="${ci?ci.weight:''}"></div>
+      <div class="field"><label>Energy (1-10)</label><input type="number" id="ciEnergy" required min="1" max="10" value="${ci?ci.energy:5}"></div>
     </div>
     <div class="field-row">
-      <div class="field"><label>Mood (1-10)</label><input type="number" id="ciMood" min="1" max="10" value="${ci?ci.mood:5}"></div>
-      <div class="field"><label>Water (ml)</label><input type="number" id="ciWater" value="${ci?ci.water||'':''}" placeholder="optional"></div>
+      <div class="field"><label>Mood (1-10)</label><input type="number" id="ciMood" required min="1" max="10" value="${ci?ci.mood:5}"></div>
+      <div class="field"><label>Water (ml)</label><input type="number" id="ciWater" min="0" value="${ci?ci.water||'':''}" placeholder="optional"></div>
     </div>
     <div class="field-row">
-      <div class="field"><label>Exercise (min)</label><input type="number" id="ciExercise" value="${ci?ci.exercise||'':''}" placeholder="optional"></div>
-      <div class="field"><label>Steps</label><input type="number" id="ciSteps" value="${ci?ci.steps||'':''}" placeholder="optional"></div>
+      <div class="field"><label>Exercise (min)</label><input type="number" id="ciExercise" min="0" value="${ci?ci.exercise||'':''}" placeholder="optional"></div>
+      <div class="field"><label>Steps</label><input type="number" id="ciSteps" min="0" value="${ci?ci.steps||'':''}" placeholder="optional"></div>
     </div>
     <div class="field-row">
-      <div class="field"><label>Calories</label><input type="number" id="ciCalories" value="${ci?ci.calories||'':''}" placeholder="optional"></div>
+      <div class="field"><label>Calories</label><input type="number" id="ciCalories" min="0" value="${ci?ci.calories||'':''}" placeholder="optional"></div>
       <div class="field"><label>Headache?</label><select id="ciHeadache"><option value="no">No</option><option value="yes" ${ci&&ci.headache?'selected':''}>Yes</option></select></div>
     </div>
     <button class="btn btn-gold" onclick="saveCheckin()">Save Check-in</button>
   </div>`;
 
-  html += `<div class="section-title">Education Profile</div><div class="card">
+  html += `<div class="section-title">Your Profile</div><div class="card">
+    <div class="field"><label for="profileName">Display name</label><input id="profileName" maxlength="60" autocomplete="nickname" value="${esc(state.profile.name)}" placeholder="Your name"></div>
     <div class="field-row">
-      <div class="field"><label>CGPA</label><input type="number" step="0.01" id="cgpaInput" value="${state.profile.cgpa}"></div>
-      <div class="field"><label>Salary (PKR)</label><input type="number" id="salaryInput" value="${state.profile.salary}"></div>
+      <div class="field"><label>CGPA</label><input type="number" step="0.01" id="cgpaInput" min="0" max="4" value="${state.profile.cgpa ?? ''}"></div>
+      <div class="field"><label>Salary (PKR)</label><input type="number" id="salaryInput" min="0" value="${state.profile.salary ?? ''}"></div>
     </div>
     <button class="btn btn-outline" onclick="saveProfile()">Update Profile</button>
   </div>`;
@@ -54,13 +55,13 @@ function renderMe(){
   </div>`;
 
   html += `<div class="section-title">Recent Reviews</div><div class="card">`;
-  const j = [...state.journal].reverse().slice(0,3);
+  const j = [...state.journal].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,3);
   if(j.length===0) html += `<div class="empty">No reviews yet.</div>`;
   else j.forEach(e=>{
     html += `<div style="padding:10px 0;border-bottom:1px solid var(--line);">
       <div class="faint" style="font-size:11px;margin-bottom:4px;">${e.date}</div>
-      <div style="font-size:13px;"><b>Best:</b> ${e.best||'—'}</div>
-      <div style="font-size:13px;"><b>Focus:</b> ${e.focus||'—'}</div>
+      <div style="font-size:13px;"><b>Best:</b> ${esc(e.best)||'—'}</div>
+      <div style="font-size:13px;"><b>Focus:</b> ${esc(e.focus)||'—'}</div>
     </div>`;
   });
   html += `</div>`;
@@ -97,6 +98,8 @@ function openWeeklyReview(){
 /* ---------- ACTIONS: activities ---------- */
 /* ---------- ACTIONS: me ---------- */
 async function saveCheckin(){
+  const inputs = document.querySelectorAll('[id^="ci"]');
+  for(const input of inputs){ if(input.reportValidity && !input.reportValidity()) return; }
   const weight = parseFloat(document.getElementById('ciWeight').value);
   const energy = parseInt(document.getElementById('ciEnergy').value);
   const mood = parseInt(document.getElementById('ciMood').value);
@@ -106,12 +109,16 @@ async function saveCheckin(){
   const calories = document.getElementById('ciCalories').value ? parseFloat(document.getElementById('ciCalories').value) : null;
   const headache = document.getElementById('ciHeadache').value === 'yes';
   state.checkins.push({date:today(), weight, energy, mood, water, exercise, steps, calories, headache});
-  await save('checkins'); showToast("Check-in saved"); render();
+  if(!await save('checkins'))return; showToast("Check-in saved"); render();
 }
 async function saveProfile(){
-  state.profile.cgpa = parseFloat(document.getElementById('cgpaInput').value) || state.profile.cgpa;
-  state.profile.salary = parseFloat(document.getElementById('salaryInput').value) || state.profile.salary;
-  await save('profile'); showToast("Profile updated");
+  const cgpa = document.getElementById('cgpaInput');
+  const salary = document.getElementById('salaryInput');
+  if(!cgpa.reportValidity() || !salary.reportValidity()) return;
+  state.profile.name = document.getElementById('profileName').value.trim();
+  state.profile.cgpa = cgpa.value === '' ? null : Number(cgpa.value);
+  state.profile.salary = salary.value === '' ? null : Number(salary.value);
+  if(!await save('profile'))return; renderHeader(); showToast('Profile updated');
 }
 async function saveJournal(){
   const best = document.getElementById('jBest').value.trim();
@@ -119,7 +126,7 @@ async function saveJournal(){
   const focus = document.getElementById('jFocus').value.trim();
   if(!best && !worst && !focus){ showToast("Add something first"); return; }
   state.journal.push({date:today(), best, worst, focus});
-  await save('journal'); showToast("Review saved");
+  if(!await save('journal'))return; showToast("Review saved");
   document.getElementById('jBest').value=''; document.getElementById('jWorst').value=''; document.getElementById('jFocus').value='';
   render();
 }

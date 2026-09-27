@@ -1,0 +1,30 @@
+# App source is isolated from local archives, native projects and documentation.
+[build]
+  base = "lifeos"
+  command = "npm run build:deploy"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22.18.0"
+  NPM_FLAGS = "--include=dev"
+
+# Keep .html callbacks and relative offline routes exactly as the app builds them.
+[build.processing]
+  skip_processing = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "no-referrer"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(self)"
+    # Preview-stage default. Remove only during the public-release review.
+    X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-store"
+    Service-Worker-Allowed = "/"

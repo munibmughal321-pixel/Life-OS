@@ -1,0 +1,13 @@
+{
+  "appId": "com.munib.lifeos",
+  "appName": "LifeOS",
+  "webDir": "dist",
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "Keyboard": {
+      "resize": "body"
+    }
+  }
+}

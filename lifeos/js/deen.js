@@ -73,19 +73,19 @@ async function toggleAdhkar(period){
   const d = today();
   if(!state.adhkar[d]) state.adhkar[d] = {morning:false, evening:false};
   state.adhkar[d][period] = !state.adhkar[d][period];
-  await save('adhkar'); render();
+  if(!await save('adhkar'))return; render();
 }
 async function toggleJumuah(){
   const d = today(); state.jumuah[d] = !state.jumuah[d];
-  await save('jumuah'); showToast(state.jumuah[d]?"Jumu'ah marked 🕌":"Unmarked"); render();
+  if(!await save('jumuah'))return; showToast(state.jumuah[d]?"Jumu'ah marked 🕌":"Unmarked"); render();
 }
 async function toggleRamadan(){
   state.ramadan.enabled = !state.ramadan.enabled;
-  await save('ramadan'); render();
+  if(!await save('ramadan'))return; render();
 }
 async function toggleFasting(){
   const d = today(); state.ramadan.fasting[d] = !state.ramadan.fasting[d];
-  await save('ramadan'); render();
+  if(!await save('ramadan'))return; render();
 }
 
 /* ---------- GROWTH ---------- */
@@ -94,7 +94,7 @@ async function togglePrayer(name){
   const d = today();
   if(!state.prayers[d]) state.prayers[d] = {Fajr:false,Dhuhr:false,Asr:false,Maghrib:false,Isha:false};
   state.prayers[d][name] = !state.prayers[d][name];
-  await save('prayers');
+  if(!await save('prayers'))return;
   render();
   if(PRAYER_NAMES.every(n=>state.prayers[d][n])){
     const s = prayerStreak();
@@ -106,12 +106,12 @@ async function logQuran(){
   if(!val || val<0){ showToast("Enter a valid page count"); return; }
   const existing = state.quran.find(q=>q.date===today());
   if(existing) existing.pages = val; else state.quran.push({date:today(), pages:val});
-  await save('quran'); showToast("Quran reading saved"); render();
+  if(!await save('quran'))return; showToast("Quran reading saved"); render();
 }
 async function saveDeenNote(){
   const note = document.getElementById('deenNote').value.trim(); if(!note) return;
   const d = today();
   if(!state.prayers[d]) state.prayers[d] = {Fajr:false,Dhuhr:false,Asr:false,Maghrib:false,Isha:false};
   state.prayers[d].note = note;
-  await save('prayers'); showToast("Reflection saved"); document.getElementById('deenNote').value='';
+  if(!await save('prayers'))return; showToast("Reflection saved"); document.getElementById('deenNote').value='';
 }

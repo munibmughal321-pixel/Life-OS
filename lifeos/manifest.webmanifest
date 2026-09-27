@@ -1,0 +1,9 @@
+{
+  "name": "LifeOS",
+  "short_name": "LifeOS",
+  "start_url": "./dashboard.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#100d23",
+  "theme_color": "#100d23"
+}

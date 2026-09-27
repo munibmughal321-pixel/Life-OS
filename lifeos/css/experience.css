@@ -1,0 +1,164 @@
+
+/* Shared visual bridge between the introduction, account forms, and workspace.
+   Scoped selectors keep each page's existing layout and behavior independent. */
+:root {
+  color-scheme: dark;
+  --bg: #100d23;
+  --surface: #1b1730;
+  --surface2: #272039;
+  --line: #494058;
+  --text: #f7f4ff;
+  --muted: #c1b9d2;
+  --faint: #b3a9c7;
+  --gold: #d1baff;
+  --gold-dim: #8a71b3;
+  --lime: #e7daff;
+  --green: #99d8bc;
+  --red: #ffa4b3;
+  --blue: #a9c4ff;
+  --purple: #d1baff;
+}
+body.account-page,
+body.workspace-page {
+  background: radial-gradient(ellipse at 15% 25%, #48356555, transparent 45%),
+    radial-gradient(ellipse at 95% 60%, #303b7055, transparent 50%), #100d23;
+  background-attachment: fixed;
+}
+/* Centered account experience */
+.account-page .site-shell { max-width: 1220px; }
+.account-page .site-header { border: 0; height: 88px; }
+.account-page .brand { letter-spacing: -1.5px; }
+.account-page .brand-dot { background: #dac4ff; border-radius: 50%; }
+.account-page .back-link { color: #c5bbd3; }
+.account-page .account-layout { display: block; border: 0; min-height: calc(100dvh - 190px); }
+.account-page .account-card { max-width: 480px; padding: 28px 0 35px; margin: auto; text-align: center; }
+.account-page .account-art { display: none; }
+.identity-orbit {
+  width: 112px; height: 112px; margin: 28px auto 44px;
+  display: grid; place-items: center; border-radius: 50%;
+  background: linear-gradient(145deg, #57505d, #25222d);
+  border: 1px solid #ffffff22; position: relative; isolation: isolate;
+  box-shadow: 0 0 0 28px #ffffff04, 0 0 0 60px #ffffff025, 0 0 95px #9873b522;
+}
+.identity-orbit::before,
+.identity-orbit::after { content: ''; position: absolute; border: 1px solid #ffffff08; border-radius: 50%; pointer-events: none; }
+.identity-orbit::before { inset: -28px; }
+.identity-orbit::after { inset: -60px; }
+.identity-orbit span { color: white; font-size: 54px; line-height: 1; }
+.account-page .account-card > .eyebrow { color: #bfb0d2; font-size: 9px; }
+.account-page .account-card h1 { font-size: 32px; letter-spacing: -.045em; margin: 14px 0 12px; }
+.account-page .account-subtitle { font-size: 14px; color: #bfb6cc; margin-bottom: 24px; }
+.account-page .account-notice { font-size: 11px; line-height: 1.6; border: 1px solid #ffffff18; background: #ffffff04; color: #c7bed1; border-radius: 12px; padding: 10px 14px; text-align: left; margin: 20px 0; }
+.account-page form { text-align: left; }
+.account-page .field { margin: 0; padding: 13px 16px 9px; background: #ffffff0a; border: 1px solid #ffffff13; border-bottom-color: #ffffff20; }
+.account-page .field:first-child { border-radius: 14px 14px 0 0; }
+.account-page .field:has(+ .forgot-link),
+.account-page .field:has(+ .form-status) { border-radius: 0 0 14px 14px; }
+.account-page .field label { font-size: 11px; margin-bottom: 3px; color: #c8bed5; }
+.account-page .field input { background: transparent; border: 0; border-radius: 6px; padding: 6px 4px; height: 38px; color: white; }
+.account-page .field input::placeholder { color: #aaa0b8; }
+.account-page .field input:focus-visible { outline: 2px solid #cfb7ff; outline-offset: 2px; }
+.account-page .field .reveal { top: -3px; right: 0; color: #d6c6ea; }
+.account-page .field-hint { margin: 0; padding: 10px 16px; background: #ffffff06; border-inline: 1px solid #ffffff13; color: #bcb0ca; }
+.account-page .forgot-link { color: #ded0f8; padding: 14px 0; }
+.account-page .primary { background: #f8f5ff; color: #241531; border-radius: 40px; min-height: 52px; box-shadow: 0 4px 25px #c098ff15; }
+.account-page form > .primary { margin-top: 20px; }
+.account-page .primary:hover { background: #dfceff; }
+.account-page .form-status { color: #e1d0ff; border-left: 2px solid #bb98ee; padding: 10px 12px; margin-bottom: 0; }
+.account-page .preview-link { color: #c3b6d3; }
+.account-page footer { border-top: 1px solid #ffffff13; padding-block: 25px; color: #afa2be; }
+/* Violet workspace surfaces, with a quiet layout for everyday reading */
+.workspace-page #root { background: transparent; }
+.workspace-page .topbar { background: transparent; border-color: #ffffff1c; }
+.workspace-page .workspace-brand span { color: #cbb3f0; }
+.workspace-page .workspace-eyebrow { color: #cbb3f0; }
+.workspace-page .workspace-heading h2 { font-weight: 500; }
+.workspace-page .card,
+.workspace-page .stat { border: 1px solid #b79ad52d; background: linear-gradient(130deg, #2a223cbb, #1b172dcc); border-radius: 18px; box-shadow: 0 10px 35px #05020d15; }
+.workspace-page .arc-wrap { background: radial-gradient(ellipse at right, #54407544, transparent 80%), #201a32; border-color: #b79ad537; border-radius: 22px; }
+.workspace-page .preview-notice { background: #241d31; border-color: #aa8bc62e; }
+.workspace-page .preview-notice summary { color: #dec8fa; }
+.workspace-page .btn { border-radius: 28px; }
+.workspace-page .btn-gold { background: #e6d5ff; color: #281737; }
+.workspace-page .btn-outline { background: #2b233b; border-color: #aa8bc646; color: #f1e9fc; }
+.workspace-page .btn-ghost { background: #332a45; }
+.workspace-page .btn-danger { background: #633d4c44; color: #ffc2cd; border-color: #d0879955; }
+.workspace-page .coach-card { background: linear-gradient(140deg, #47325a66, #231b34); border-color: #b297cc55; border-radius: 20px; }
+.workspace-page .coach-title { color: #dfc4ff; }
+.workspace-page .mission { background: #a581c51a; }
+.workspace-page .mission-card { background: linear-gradient(130deg, #34344f, #221d34); border-color: #8685b04d; }
+.workspace-page .live-banner { background: #342843; border-color: #9778b6; }
+.workspace-page .activity-tile { background: linear-gradient(135deg, #342842aa, #231c32); border-color: #ab8dc73d; border-radius: 16px; }
+.workspace-page .activity-tile:hover { background: #483453; border-color: #b699d2; }
+.workspace-page .activity-symbol { background: #8c61b52b; color: #e0c2ff; border-radius: 12px; }
+.workspace-page .activity-tile:nth-child(3n+2) .activity-symbol { background: #507d8833; color: #b9e0e0; }
+.workspace-page .activity-tile:nth-child(3n+3) .activity-symbol { background: #a16c7333; color: #f5c9d0; }
+.workspace-page .subtabs { background: #201a2f; border-color: #a98fc63d; border-radius: 16px; }
+.workspace-page .subtab { color: #c8bbd9; }
+.workspace-page .subtab.active { background: #473359; color: #f0e5ff; box-shadow: none; border-radius: 11px; }
+.workspace-page .empty-icon { background: #483359; color: #dec4fc; border-radius: 50%; }
+.workspace-page nav { background: #191429f5; border-color: #a48dbf38; }
+.workspace-page .navbtn.active { background: #4b3666; color: #f3e9ff; box-shadow: none; border-radius: 12px; }
+.workspace-page .modal { background: linear-gradient(150deg, #292235, #1e192b); border-color: #8a729f66; box-shadow: 0 30px 120px #0009; }
+.workspace-page .dialog-close { background: #46374f; color: #f5ecff; }
+.workspace-page .modal input,
+.workspace-page .modal textarea,
+.workspace-page .modal select { background: #171221; border-color: #675376; color: #f3eaff; }
+.workspace-page .modal .chip { background: #382b48; border-color: #766086; color: #e5d7f2; border-radius: 18px; }
+.workspace-page .modal .chip.active { background: #d7b8ff; color: #21112e; }
+.workspace-page .mini-bar,
+.workspace-page .xp-bar { background: #ffffff0c; }
+.workspace-page .mini-bar-fill { background: linear-gradient(90deg, #9a77d9, #dcc0ff); }
+.workspace-page .toast { background: #30213f; border-color: #9779b4; color: #f5eaff; }
+@media(max-width:600px) {
+  .account-page .site-header { height: 72px; }
+  .account-page .account-card { padding-top: 20px; }
+  .identity-orbit { width: 84px; height: 84px; margin: 22px auto 32px; box-shadow: 0 0 0 20px #ffffff04, 0 0 0 42px #ffffff025; }
+  .identity-orbit::before { inset: -20px; }
+  .identity-orbit::after { inset: -42px; }
+  .identity-orbit span { font-size: 42px; }
+  .account-page .account-card h1 { font-size: 29px; }
+  .account-page .account-notice { font-size: 10px; }
+  .account-page .field { padding: 11px 13px 7px; }
+}
+
+/* Personalization stays optional and does not change the module layout. */
+.personalization-card .personalization-title{font-size:24px;font-weight:500;letter-spacing:-.03em;margin:8px 0 12px;line-height:1.25}.personalization-description{font-size:13px;color:var(--muted);line-height:1.8}.personalization-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:18px}.personalization-interests{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}.personalization-interests .chip{font-size:11px;background:#3a2b4b;border-color:#775e8d;min-height:40px}.preference-link{display:inline-flex;align-items:center;min-height:44px;color:#e0c5ff;font-size:12px;text-underline-offset:5px}.personalization-note{font-size:11px;line-height:1.7;color:var(--faint);margin:16px 0 0}
+
+.session-panel{margin-top:18px}.session-panel p,.session-finished{font-size:13px;line-height:1.7;color:var(--muted)}.session-finished{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}.session-finished .btn{flex-shrink:0}.session-option{display:flex;align-items:center;gap:10px;margin:16px 0}.session-option input{width:20px!important;height:20px}.session-presets{margin-top:10px}.session-presets button{border:1px solid var(--line);border-radius:20px;background:var(--surface2);color:var(--text);padding:9px 14px}.session-suggestion{padding:14px;background:#47335c55;border-radius:12px;font-size:13px;line-height:1.7}.session-panel[hidden],[hidden]{display:none!important}@media(max-width:420px){.session-finished{align-items:flex-start;flex-direction:column}}
+.priority-row{gap:16px;align-items:center;padding:10px 0;flex-wrap:wrap}
+.priority-row strong,.log-info{overflow-wrap:anywhere}
+#storageStatus{font-size:13px;line-height:1.6;overflow-wrap:anywhere;margin:12px 0}
+#storageStatus[role="alert"]{padding:12px;border:1px solid var(--red);border-radius:12px}
+.session-panel>.btn{margin:6px 6px 6px 0}
+.log-row{flex-wrap:wrap}
+.library-heading{display:flex;justify-content:space-between;align-items:center;gap:20px;margin:24px 0}
+.library-heading h2{margin:0;font-size:28px}.library-heading p{color:var(--muted);line-height:1.6}
+.library-heading>.btn{width:auto;flex-shrink:0}.library-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.library-card{margin:0;display:flex;flex-direction:column;gap:10px;min-width:0}
+.library-card h3,.library-card p{margin:0;overflow-wrap:anywhere}.library-card p{color:var(--muted);line-height:1.6}
+.library-kicker{font-size:11px;letter-spacing:.08em;color:var(--gold)}
+.library-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:auto;padding-top:12px}
+.library-actions .btn{width:auto}.library-card progress{width:100%;accent-color:var(--gold)}
+.library-settings summary,.library-details summary,.library-academic>summary{cursor:pointer;padding:12px 0}
+.library-details{padding:8px 0}.library-toolbar{display:flex;gap:12px;align-items:center;margin-top:20px}
+.library-toolbar select{width:auto}.vault-excerpt{white-space:pre-wrap}
+#skillSuggestions{margin-bottom:16px}.library-academic{margin-top:24px}
+@media(max-width:700px){.library-grid{grid-template-columns:1fr}.library-heading{align-items:stretch;flex-direction:column}.library-heading>.btn{width:100%}}
+#root:not([data-current-screen="dashboard"]) #sessionPanel{padding:14px 18px}
+#root:not([data-current-screen="dashboard"]) #sessionPanel>p{margin:6px 0}
+
+/* Local data tools use the existing dialog and remain usable on narrow screens. */
+.local-tools { margin: 8px 0 20px; }
+.backup-actions { display:flex; flex-wrap:wrap; gap:10px; margin:16px 0; }
+.backup-actions .btn { width:auto; flex:1 1 180px; }
+.backup-counts { width:100%; border-collapse:collapse; margin:16px 0; font-size:13px; }
+.backup-counts caption { text-align:left; margin-bottom:8px; }
+.backup-counts th, .backup-counts td { text-align:left; padding:7px 3px; border-bottom:1px solid var(--border, #494555); }
+#backupFile { width:100%; min-width:0; font-size:13px; }
+#backupPreview .session-option { margin:16px 0; }
+.offline-notice { padding:10px 16px; margin:12px auto; max-width:1120px; font:13px/1.5 system-ui,sans-serif; color:#f2edff; background:#242033; border:1px solid #595168; border-radius:10px; }
+
+.dashboard-account-actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.dashboard-account-actions .btn{width:auto;text-decoration:none;text-align:center}
+@media(max-width:480px){.dashboard-account-actions .btn{flex:1 1 120px}}

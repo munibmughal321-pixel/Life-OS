@@ -1,0 +1,21 @@
+export const collections = {
+  logs:[{id:'session1',activity:'Study',startISO:'2026-09-12T18:00:00Z',endISO:'2026-09-12T19:00:00Z'}],
+  prayers:{'2026-09-12':{Fajr:true,Dhuhr:false,Asr:false,Maghrib:false,Isha:false,note:'Reflection'}},
+  quran:[{date:'2026-09-12',pages:3}],
+  finance:[{id:'finance1',type:'expense',amount:125,category:'Food',note:'Sample',date:'2026-09-12'}],
+  loans:[{id:'loan1',name:'Sample person',type:'given',amount:200,notes:'Sample',settled:false,date:'2026-09-12'}],
+  recurring:[{id:'recurring1',name:'Internet',amount:1000,frequency:'Monthly',category:'Bills'}],
+  checkins:[{date:'2026-09-12',weight:70,energy:6,mood:7,water:1800,exercise:20,steps:3000,calories:null,headache:false}],
+  profile:{name:'Sample user',cgpa:3,salary:20000,academicTools:true,learningPaths:['Independent learning']},
+  goals:[{id:'goal1',name:'Read books',category:'Learning',tracking:'number',target:10,current:2,start:0,unit:'books',status:'In Progress',deadline:'',sessionProgress:'manual'}],
+  skills:[{id:'skill1',name:'Cooking',xp:2,projects:1,practice:[{id:'practice1',date:'2026-09-12',minutes:20,note:'Sample practice'}]}],
+  education:[{id:'education1',name:'Read a book',type:'Book',status:'In Progress',notes:'Sample',completed:2,total:10,progressUnit:'chapters',deadline:''}],
+  notes:[{id:'note1',title:'Shopping',content:'Sample note',category:'Personal',date:'2026-09-12',tags:['home'],checklist:[{text:'Milk',done:false}]}],
+  journal:[{date:'2026-09-12',best:'Study',worst:'Late start',focus:'Rest'}],
+  mission:{goalId:'goal1'},
+  courses:[{id:'course1',name:'Programming',creditHours:3,gradePoints:3.5}],
+  adhkar:{'2026-09-12':{morning:true,evening:false}},
+  jumuah:{'2026-09-11':true},
+  ramadan:{enabled:false,fasting:{'2026-09-12':false}},
+  trades:[{id:'trade1',pair:'Sample/USD',entry:10,exit:11,tp:'12',sl:'9',result:'Win',lessons:'Sample journal only',date:'2026-09-12'}]
+};

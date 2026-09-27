@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#100d23">
+  <title>Make LifeOS yours</title>
+  <link rel="icon" href="assets/icons8-favicon-50.apng.png">
+  <link rel="stylesheet" href="css/landing.css">
+  <link rel="stylesheet" href="css/welcome.css">
+  <script src="js/preferences.js" defer></script>
+  <script src="js/welcome.js" defer></script>
+<link rel="manifest" href="manifest.webmanifest">
+<script type="module" src="js/offline.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#setupTitle">Skip to setup</a>
+  <header class="landing-nav wrap"><a class="brand" href="index.html">life<span>OS</span><i aria-hidden="true">✳</i></a><a class="login-link" href="dashboard.html">Skip setup →</a></header>
+  <main class="setup-wrap">
+    <div class="setup-progress" aria-label="Setup progress"><span id="stepLabel"></span><progress id="setupProgress" max="3" value="1"></progress></div>
+    <form id="setupForm">
+      <p class="eyebrow">MAKE LIFEOS YOURS</p>
+      <h1 id="setupTitle" tabindex="-1"></h1>
+      <p id="setupDescription" class="setup-description"></p>
+      <fieldset id="setupChoices"><legend class="visually-hidden" id="choiceLegend"></legend><div id="choiceGrid" class="choice-grid"></div></fieldset>
+      <section id="setupReview" hidden aria-label="Review your choices"></section>
+      <p id="setupStatus" role="status" aria-live="polite"></p>
+      <div class="setup-actions"><button id="setupBack" class="setup-back" type="button">← Back</button><button id="setupNext" class="button" type="submit">Continue →</button></div>
+    </form>
+    <p class="setup-privacy">These choices personalize suggestions only. They are stored in this browser, not an account. All modules stay available. Edit or reset them anytime in Me.</p>
+    <a class="setup-skip" href="dashboard.html">Continue without changing preferences</a>
+  </main>
+<script type="module" src="native/runtime.js"></script>
+</body>
+</html>

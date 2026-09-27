@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Dashboard · LifeOS</title>
+<link rel="icon" type="image/png" href="assets/icons8-favicon-50.apng.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/experience.css">
+<link rel="manifest" href="manifest.webmanifest">
+<script type="module" src="js/offline.js"></script>
+</head>
+<body class="workspace-page">
+<a class="skip-link" href="#main">Skip to content</a>
+<div id="root">
+  <div class="topbar">
+    <a class="workspace-brand" href="index.html" aria-label="LifeOS home">LifeOS<span> / WORKSPACE</span></a>
+    <div>
+      <p class="greet-label" id="dateLabel">—</p>
+      <h1 class="greet-name" id="greetName">Loading…</h1>
+    </div>
+    <button class="back-btn" id="backBtn" style="display:none;" onclick="goToScreen('dashboard')">← Back</button>
+  </div>
+  <div class="dashboard-account-actions" aria-label="Account controls"><a class="btn btn-outline btn-sm" href="account.html">Your account</a><a class="btn btn-outline btn-sm" href="account.html?action=switch">Switch account</a><a class="btn btn-outline btn-sm" href="account.html?action=logout">Log out</a></div>
+  <div class="arc-wrap" id="arcWrap"></div>
+  <details class="preview-notice" id="previewNotice"><summary id="workspaceIdentity">Opening workspace</summary><p>Signed-out records stay in the device-only workspace. Each signed-in account has a separate local workspace. Sync is optional. To move earlier records, sign out, export a backup, sign in, then explicitly import it. Imported account records will sync if sync is enabled. Logout retains pending records for the same account; browser data is not encrypted. Use trusted devices and external backups.</p></details>
+  <p id="storageStatus" role="status">Opening local storage…</p>
+  <section class="card" aria-label="Account sync">
+    <p id="syncStatus" role="status">Opening account sync…</p>
+    <div class="local-tools">
+      <button type="button" id="syncEnable" class="btn btn-outline btn-sm" hidden disabled>Enable sync for this account</button>
+      <button type="button" id="syncNow" class="btn btn-outline btn-sm" hidden disabled>Sync now</button>
+      <button type="button" id="reloadCloud" class="btn btn-outline btn-sm" onclick="location.reload()" hidden>Reload to view cloud changes</button>
+      <button type="button" id="exportConflicts" class="btn btn-outline btn-sm" hidden>Download both conflict copies</button>
+    </div>
+    <div id="syncConflicts"></div>
+  </section>
+  <div class="local-tools"><button type="button" class="btn btn-outline btn-sm" onclick="openBackupTools()">Backup &amp; recovery</button></div>
+  <section id="sessionPanel" class="card session-panel" aria-label="Session status" hidden></section>
+  <section class="workspace-heading" aria-labelledby="screenTitle"><div><p class="workspace-eyebrow" id="screenEyebrow">YOUR EVERYDAY, INTENTIONALLY</p><h2 id="screenTitle">Overview</h2><p id="screenDescription"></p></div><span class="workspace-counter" id="screenNumber" aria-hidden="true">01 / 06</span></section>
+  <main id="main" tabindex="-1" aria-label="Dashboard"></main>
+  <div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modalBody" role="dialog" aria-modal="true" aria-label="LifeOS dialog" tabindex="-1"></div></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <nav aria-label="Main navigation">
+    <button class="navbtn active" data-screen="dashboard"><span class="navicon">◆</span>Dashboard</button>
+    <button class="navbtn" data-screen="activities"><span class="navicon">◷</span>Activities</button>
+    <button class="navbtn" data-screen="growth"><span class="navicon">↗</span>Growth</button>
+    <button class="navbtn" data-screen="finance"><span class="navicon">▤</span>Finance</button>
+    <button class="navbtn" data-screen="deen"><span class="navicon">☾</span>Deen</button>
+    <button class="navbtn" data-screen="me"><span class="navicon">◎</span>Me</button>
+  </nav>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/state.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/data-schema.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/activities.js"></script>
+<script src="js/deen.js"></script>
+<script src="js/growth.js"></script>
+<script src="js/growth-library.js"></script>
+<script src="js/finance.js"></script>
+<script src="js/me.js"></script>
+<script src="js/preferences.js"></script>
+<script src="js/personalization.js"></script>
+<script src="js/session-store.js"></script>
+<script src="js/activity-editor.js"></script>
+<script src="js/sessions.js"></script>
+<script src="js/backup.js"></script>
+<script src="js/sync-storage.js"></script>
+<script type="module" src="backend/sync-page.js"></script>
+<script src="js/app.js"></script>
+<script type="module" src="native/runtime.js"></script>
+</body>
+</html>

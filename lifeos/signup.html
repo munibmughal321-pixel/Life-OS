@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="referrer" content="no-referrer">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f2fb">
+<meta name="description" content="LifeOS brings your activities, goals, finances and daily reflections into one personal workspace.">
+<title>Begin your LifeOS journey. · LifeOS</title>
+<link rel="icon" href="assets/icons8-favicon-50.apng.png">
+<link rel="stylesheet" href="css/auth-entry.css">
+
+<link rel="manifest" href="manifest.webmanifest">
+<script type="module" src="js/offline.js"></script>
+</head>
+<body class="account-page">
+<a class="skip" href="#content">Skip to content</a>
+<div class="site-shell">
+<header class="site-header">
+<a class="brand" href="index.html" aria-label="LifeOS home">LifeOS<span class="brand-dot">
+</span>
+</a>
+<a class="back-link" href="index.html">← Back to home</a>
+</header>
+<main id="content" class="account-layout">
+<section class="account-card">
+<a class="form-brand" href="index.html" aria-label="LifeOS home">✳ lifeOS</a>
+
+<h1>Make it yours.</h1>
+<p class="account-subtitle">A little structure. More room for life.</p>
+
+<form id="accountForm" data-mode="signup">
+<div class="field">
+<label for="displayName">Display name</label>
+<input id="displayName" name="displayName" autocomplete="nickname" maxlength="60" required>
+</div>
+<div class="field">
+<label for="email">Email</label>
+<input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" maxlength="254" required>
+</div>
+<div class="field">
+<label for="password">Password</label>
+<div class="password-field">
+<input id="password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="128">
+<button class="reveal" type="button" data-reveal="password" aria-label="Show password" aria-pressed="false">Show</button>
+</div>
+</div>
+<p class="field-hint">Use at least 8 characters.</p>
+<div class="field">
+<label for="confirmPassword">Confirm password</label>
+<div class="password-field">
+<input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" required minlength="8" maxlength="128">
+<button class="reveal" type="button" data-reveal="confirmPassword" aria-label="Show confirm password" aria-pressed="false">Show</button>
+</div>
+</div>
+<p id="formStatus" class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
+<button class="button primary full" type="submit">Create account <span aria-hidden="true">↗</span>
+</button>
+</form>
+<div class="account-footer">Already have an account? <a href="login.html">Log in</a>
+</div>
+<a class="preview-link" href="welcome.html">Explore before signing in →</a>
+</section>
+<aside class="account-art"><p class="eyebrow">A LITTLE STRUCTURE. MORE ROOM FOR LIFE.</p><h2>Make room for<br><em>what matters.</em></h2><p class="art-description">Your goals, learning and everyday moments.<br>A place to bring them together.</p><div class="auth-illustration" aria-hidden="true"><div class="auth-note"><span>✦ A SMALL STEP TODAY</span><strong>Learn something new.</strong><p>Curiosity looks good on you.</p><div class="auth-progress"></div></div><div class="auth-note second"><span>☾ A MOMENT FOR YOURSELF</span><strong>Pause. Reflect. Begin again.</strong><p>Progress has its own pace.</p></div></div><p class="art-footnote">Your life. A little more connected.</p></aside>
+</main>
+<footer>
+<span>LifeOS / Your life. In focus.</span>
+<span>LifeOS account</span>
+</footer>
+</div>
+<script type="module" src="backend/auth-page.js">
+</script>
+<script type="module" src="native/runtime.js"></script>
+</body>
+</html>

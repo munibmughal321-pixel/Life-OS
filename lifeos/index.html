@@ -1,47 +1,81 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LifeOS</title>
-<link rel="icon" type="image/png" href="icons8-favicon-50.apng">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/styles.css">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f2fb">
+<meta name="description" content="Bring your activities, learning, goals and daily reflections into one personal workspace with LifeOS.">
+<title>LifeOS — A little structure. More room for life.</title>
+<link rel="icon" href="assets/icons8-favicon-50.apng.png">
+<link rel="stylesheet" href="css/landing.css">
+<link rel="manifest" href="manifest.webmanifest">
+<script type="module" src="js/landing.js"></script>
+<script type="module" src="js/offline.js"></script>
 </head>
 <body>
-<div id="root">
-  <div class="topbar">
-    <div>
-      <p class="greet-label" id="dateLabel">—</p>
-      <h1 class="greet-name" id="greetName">Loading…</h1>
-    </div>
-    <button class="back-btn" id="backBtn" style="display:none;" onclick="goToScreen('dashboard')">← Back</button>
-  </div>
-  <div class="arc-wrap" id="arcWrap"></div>
-  <main id="main"></main>
-  <div class="modal-backdrop" id="modalBackdrop"><div class="modal" id="modalBody"></div></div>
-  <div class="toast" id="toast"></div>
-  <nav>
-    <button class="navbtn active" data-screen="dashboard"><span class="navicon">◆</span>Dashboard</button>
-    <button class="navbtn" data-screen="activities"><span class="navicon">◷</span>Activities</button>
-    <button class="navbtn" data-screen="growth"><span class="navicon">📚</span>Dashboard</button>
-    <button class="navbtn" data-screen="finance"><span class="navicon">💵</span>Finance</button>
-    <button class="navbtn" data-screen="me"><span class="navicon">☺</span>Me</button>
-  </nav>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="landing-nav">
+<a class="brand" href="index.html" aria-label="LifeOS home"><span aria-hidden="true">✳</span> lifeOS</a>
+<nav aria-label="Main navigation"><a href="#explore">Explore</a><a href="#how-it-works">How it works</a><a href="#questions">FAQs</a></nav>
+<div class="nav-actions"><a href="login.html">Log in</a><a class="button small" href="signup.html">Get started <span aria-hidden="true">↗</span></a></div>
+</header>
+<main id="main">
+<section class="hero wrap">
+<div class="hero-copy"><p class="eyebrow">A PERSONAL WORKSPACE FOR EVERYDAY LIFE</p>
+<h1>A little structure.<br>More room for <em>life.</em></h1>
+<p class="lead">Your plans, progress and all the little things in between. Bring them together, and make time for what matters to you.</p>
+<a class="button" href="signup.html">Create your LifeOS <span aria-hidden="true">↗</span></a>
+<a class="text-link" href="welcome.html">Or explore the workspace first →</a>
+<p class="micro">Start with one goal. Build your own rhythm.</p>
 </div>
-
-<script src="js/config.js"></script>
-<script src="js/state.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/ui.js"></script>
-<script src="js/dashboard.js"></script>
-<script src="js/activities.js"></script>
-<script src="js/deen.js"></script>
-<script src="js/growth.js"></script>
-<script src="js/finance.js"></script>
-<script src="js/me.js"></script>
-<script src="js/app.js"></script>
-</body>
-</html>
+<div class="hero-art" aria-label="Illustrative LifeOS workspace, not your personal data">
+<div class="floating-note"><span>✦</span> A little progress, every day.</div>
+<div class="demo-window">
+<div class="window-bar"><span class="brand">✳ lifeOS</span><span class="demo-label">EXAMPLE WORKSPACE</span></div>
+<div class="demo-greeting"><span class="micro">YOUR DAY, WITH INTENTION</span><h2>Make space for a good day.</h2></div>
+<div class="focus-preview"><div><span class="micro">UP NEXT</span><h3>A moment to focus</h3><p>Study · 25 minute session</p></div><div class="timer-ring"><span>25:00</span></div></div>
+<div class="demo-row"><span class="square lavender">↗</span><div><strong>Build something meaningful</strong><small>One small step toward your goal</small></div><span class="check">✓</span></div>
+<div class="demo-row"><span class="square peach">▤</span><div><strong>Keep a good idea</strong><small>A place for your notes and inspiration</small></div><span>＋</span></div>
+<div class="demo-tabs"><span>◷ Activities</span><span>↗ Growth</span><span>☾ Deen</span></div>
+</div>
+<div class="floating-note lower">☾ &nbsp; Room to pause, too.</div>
+</div>
+</section>
+<section class="area-strip wrap" aria-label="Life areas"><p>FOR ALL THE DIFFERENT PARTS OF YOU</p><div><span>◷ Activities</span><span>↗ Growth</span><span>▤ Finance</span><span>☾ Deen</span><span>◎ Reflection</span></div></section>
+<section id="how-it-works" class="walkthrough wrap">
+<div class="section-heading"><p class="eyebrow">LESS SCATTERED. MORE CONNECTED.</p><h2>Your day makes more sense <em>together.</em></h2><p>Start wherever you are. Let the next step be a small one.</p></div>
+<div class="walkthrough-grid">
+<div class="step-list" aria-label="Explore the LifeOS workflow">
+<button data-step="0" class="step active" aria-pressed="true"><span>01</span><div><h3>Choose what matters</h3><p>Make room for a goal, a new skill or a routine you want to keep.</p></div></button>
+<button data-step="1" class="step" aria-pressed="false"><span>02</span><div><h3>Give it a little time</h3><p>Start a session with an intention and a finish time that works for you.</p></div></button>
+<button data-step="2" class="step" aria-pressed="false"><span>03</span><div><h3>See your progress</h3><p>Review your day, capture a lesson and decide what comes next.</p></div></button>
+</div>
+<div class="step-preview" aria-live="polite"><span class="demo-label">ILLUSTRATIVE PREVIEW</span><div class="preview-symbol" id="stepSymbol">↗</div><h3 id="stepTitle">Big ideas. Small next steps.</h3><p id="stepDescription">Learn a language, finish a project, build a routine. Define progress in a way that fits your life.</p><div class="preview-task"><span id="stepTask">My next milestone</span><span id="stepValue">One step at a time</span></div><div class="sample-progress"><span id="stepProgress"></span></div><a class="button soft" href="welcome.html">Find your starting point →</a></div>
+</div>
+</section>
+<section id="explore" class="features wrap">
+<div class="section-heading"><p class="eyebrow">ONE PLACE. MANY POSSIBILITIES.</p><h2>There’s more to you<br>than a to-do list.</h2><p>A workspace that makes room for learning, living and everything between.</p></div>
+<div class="feature-grid">
+<article class="feature-card wide"><div><span class="feature-icon">↗</span><h3>Keep growing, your way.</h3><p>Books, courses, creative skills or everyday abilities. Give your curiosity a place to grow, with goals that go beyond saving money.</p><a href="welcome.html">Explore your interests →</a></div><div class="learning-art" aria-hidden="true"><div class="mini-card tilted">✎ &nbsp; Learn something new<span>Read · Practise · Reflect</span></div><div class="mini-card">◎ &nbsp; Your next milestone<div class="mini-track"></div></div></div></article>
+<article class="feature-card"><span class="feature-icon">◷</span><h3>Make time feel intentional.</h3><p>Plan a session, track your activity and reflect when it ends. Notice where your day goes.</p><div class="time-chips"><span>Study · 25 min</span><span>Walk · 20 min</span><span>Rest</span></div></article>
+<article class="feature-card"><span class="feature-icon">▤</span><h3>Good ideas deserve a home.</h3><p>Save notes, links and little discoveries in your Vault. Add tags so you can find them when you need them.</p><div class="paper-note">An idea for later…<span>ideas &nbsp; learning &nbsp; personal</span></div></article>
+<article class="feature-card"><span class="feature-icon">◒</span><h3>A clearer view of your money.</h3><p>Keep income, expenses and savings goals together. Build a picture from the entries you record.</p><div class="ledger"><span>Income <b>＋</b></span><span>Expenses <b>−</b></span><span>Your perspective <b>↗</b></span></div></article>
+<article class="feature-card"><span class="feature-icon">☾</span><h3>Leave room for reflection.</h3><p>Check in with yourself, keep a journal and make space for Deen and daily intentions.</p><div class="reflection-note">What is one thing<br>you’re grateful for today? <span>✦</span></div></article>
+</div>
+</section>
+<section class="scenarios wrap"><div class="section-heading"><p class="eyebrow">MADE FOR DIFFERENT KINDS OF DAYS</p><h2>Find a rhythm that feels like you.</h2><p>Example workflows to help you get started.</p></div><div class="scenario-grid">
+<article><span>01 / THE CURIOUS LEARNER</span><h3>One chapter.<br>One new possibility.</h3><p>Keep a reading list, practise a skill and save the ideas you want to revisit.</p></article>
+<article><span>02 / THE EVERYDAY BUILDER</span><h3>Turn “someday”<br>into a next step.</h3><p>Break a project into milestones and make a little time to move it forward.</p></article>
+<article><span>03 / THE INTENTIONAL DAY</span><h3>Make progress.<br>Make space.</h3><p>Balance focused sessions with your routines, reflection and time to rest.</p></article>
+</div></section>
+<section id="questions" class="faq wrap"><div class="section-heading"><h2>A few things you might be wondering.</h2></div><div class="faq-list">
+<details><summary>Where should I start?</summary><p>Choose Get started to create an account, or explore the workspace first. The welcome setup helps you choose interests, a priority and a daily time intention.</p></details>
+<details><summary>Is LifeOS only for students?</summary><p>No. Learning includes books, workshops and independent study. Skills can be technical, creative, practical or personal. Academic tools are optional.</p></details>
+<details><summary>Can I use it without creating an account?</summary><p>You can explore the local workspace without signing in. Browser data belongs to that device and browser profile. Use the app’s backup tools to keep an external copy.</p></details>
+<details><summary>Will reminders work when I close the browser?</summary><p>Web reminders depend on browser permissions and the app being available. They are not a dependable alarm when the browser is closed or the device is asleep.</p></details>
+<details><summary>Can I change my goals and interests later?</summary><p>Yes. Edit your preferences, goals and learning paths as your priorities change. You don’t have to organize everything on day one.</p></details>
+</div></section>
+<section class="closing wrap"><span class="closing-spark" aria-hidden="true">✳</span><h2>A little more direction.<br><em>A lot more possibility.</em></h2><p>Start with the part of your life that matters today.</p><a class="button" href="signup.html">Create your LifeOS ↗</a><a class="text-link" href="login.html">Already here? Log in</a></section>
+</main>
+<footer class="wrap"><a class="brand" href="index.html">✳ lifeOS</a><p>Your life. A little more connected.</p><div><a href="login.html">Log in</a><a href="signup.html">Create account</a><a href="#questions">FAQs</a></div><small>Built for progress, at your pace.</small></footer>
+<script type="module" src="native/runtime.js"></script>
+</body></html>

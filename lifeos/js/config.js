@@ -1,6 +1,6 @@
 // App constants, presets, and static configuration
-const NAME = "Munib";
-const today = () => new Date().toISOString().slice(0,10);
+const localDateKey = date => date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0');
+const today = () => localDateKey(new Date());
 const DAY_MS = 86400000;
 let currentScreen = "dashboard";
 let growthSub = "goals";

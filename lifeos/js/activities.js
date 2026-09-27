@@ -1,7 +1,15 @@
+const activitySymbols = {Sleep:'☾',Work:'▣',Study:'✎',Quran:'◇',Workout:'↗',Travel:'➝',Gaming:'⊕','Social Media':'#','Family/Friends':'♡',Other:'⋯'};
+function activityTile(activity, inDialog){
+ const button = document.createElement('button');
+ button.className = 'activity-tile';
+ button.setAttribute('onclick', (inDialog ? 'closeModal();' : '') + 'startActivity(' + JSON.stringify(activity.key) + ')');
+ button.innerHTML = '<span class="activity-symbol" aria-hidden="true">' + activitySymbols[activity.key] + '</span><span>' + esc(activity.key) + '</span><span class="activity-arrow" aria-hidden="true">↗</span>';
+ return button.outerHTML;
+}
 // Activity tracking and sleep checkout
 function renderActivities(){
   const act = activeLog();
-  let html = '';
+  let html = activitySummaryHTML()+'<button class="btn btn-outline" style="margin-bottom:16px" onclick="openActivityEditor()">Log a past activity</button>';
   if(act){
     html += `<div class="live-banner">
       <div style="display:flex;align-items:center;gap:10px;">
@@ -11,52 +19,23 @@ function renderActivities(){
       <button class="btn btn-gold" style="width:auto;padding:9px 14px;" onclick="endActivity('${act.id}')">Check Out</button>
     </div>`;
   } else {
-    html += `<div class="section-title">Check In</div><div class="chip-row" style="margin-bottom:14px;">`;
-    ACTIVITY_TYPES.forEach(a=>{ html += `<button class="chip" onclick="startActivity('${a.key}')">${a.key}</button>`; });
+    html += `<div class="section-title">Check In</div><div class="activity-picker">`;
+    ACTIVITY_TYPES.forEach(a=>{ html += activityTile(a, false); });
     html += `</div>`;
   }
   html += `<div class="section-title">Today's Log</div><div class="card">`;
   const logs = todaysLogs();
-  if(logs.length===0){ html += `<div class="empty">No activity logged yet today.</div>`; }
+  if(logs.length===0){ html += `<div class="empty"><span class="empty-icon" aria-hidden="true">◷</span><strong>Your day starts here.</strong><span>Choose an activity above to begin your timeline.</span></div>`; }
   else logs.forEach(l=>{ html += logRowHTML(l); });
   html += `</div>`;
+  const older=state.logs.filter(l=>!logs.includes(l)).sort((a,b)=>Date.parse(b.startISO)-Date.parse(a.startISO));
+  if(older.length)html+='<details class="card"><summary>Earlier activities ('+older.length+')</summary>'+older.map(logRowHTML).join('')+'</details>';
   document.getElementById('main').innerHTML = html;
 }
 
-/* ---------- DEEN (accessed via link, not in nav) ---------- */
-async function startActivity(name){
-  if(activeLog()){ showToast("Check out your current activity first"); return; }
-  state.logs.push({id:uid(), activity:name, startISO:new Date().toISOString(), endISO:null});
-  await save('logs'); showToast(`Checked in: ${name}`); render();
-}
-async function endActivity(id){
-  const l = state.logs.find(l=>l.id===id); if(!l) return;
-  if(l.activity==='Sleep'){ openSleepCheckoutModal(id); return; }
-  l.endISO = new Date().toISOString();
-  await save('logs'); showToast(`Checked out: ${l.activity}`); render();
-}
-function openSleepCheckoutModal(id){
-  let html = `<div class="modal-title">Sleep Check-out</div>
-    <div class="field"><label>Sleep Quality</label>
-      <div class="chip-row" id="qualityChips">${[1,2,3,4,5].map(n=>`<button class="chip" data-q="${n}" onclick="selectQuality(${n})">${n}</button>`).join('')}</div>
-    </div>
-    <div class="chip-row" style="margin-bottom:6px;"><button class="chip" id="headacheChip" onclick="this.classList.toggle('active')">Woke up with headache</button></div>
-    <div class="modal-actions">
-      <button class="btn btn-outline" onclick="closeModal()">Skip</button>
-      <button class="btn btn-gold" onclick="finalizeSleepCheckout('${id}')">Save</button>
-    </div>`;
-  showModal(html); window._sleepQuality = null;
-}
-function selectQuality(n){ window._sleepQuality = n; document.querySelectorAll('#qualityChips .chip').forEach(c=>c.classList.toggle('active', parseInt(c.dataset.q)===n)); }
-async function finalizeSleepCheckout(id){
-  const l = state.logs.find(l=>l.id===id);
-  l.endISO = new Date().toISOString(); l.quality = window._sleepQuality || null;
-  l.headache = document.getElementById('headacheChip').classList.contains('active');
-  await save('logs'); closeModal(); showToast("Sleep logged"); render();
-}
 function openCheckinModal(){
-  let html = `<div class="modal-title">Start Activity</div><div class="chip-row">`;
-  ACTIVITY_TYPES.forEach(a=>{ html += `<button class="chip" onclick="closeModal();startActivity('${a.key}')">${a.key}</button>`; });
+  let html = `<div class="modal-title">Start an activity</div><p class="dialog-description">What are you making time for?</p><div class="activity-picker">`;
+  ACTIVITY_TYPES.forEach(a=>{ html += activityTile(a, true); });
   html += `</div><div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">Cancel</button></div>`;
   showModal(html);
 }

@@ -4,22 +4,22 @@ function renderArc(){
   const size=180, cx=size/2, cy=size/2, r=76;
   const logs = todaysLogs(); const now = new Date();
   let svg = `<svg class="arc-svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">`;
-  svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#1B2740" stroke-width="14"/>`;
+  svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--line)" stroke-width="14"/>`;
   logs.forEach(l=>{
-    const start = new Date(l.startISO); const end = l.endISO ? new Date(l.endISO) : now;
+    const [dayStart,dayEnd]=localDayBounds(now); const start=new Date(Math.max(dayStart,Date.parse(l.startISO))); const end=new Date(Math.min(dayEnd,Date.parse(l.endISO || now.toISOString())));
     const startFrac = (start.getHours()*60+start.getMinutes())/1440;
-    const endFrac = Math.min(1,(end.getHours()*60+end.getMinutes())/1440 + (end<start?1:0));
+    const endFrac = Math.min(1,(end.getTime()===dayEnd?1:(end.getHours()*60+end.getMinutes())/1440));
     const a0 = startFrac*360 - 90, a1 = Math.max(a0+2, endFrac*360-90);
     svg += arcPath(cx,cy,r,a0,a1,colorFor(l.activity));
   });
   const nowFrac = (now.getHours()*60+now.getMinutes())/1440;
   const ang = (nowFrac*360-90) * Math.PI/180;
   const nx = cx + (r)*Math.cos(ang), ny = cy + (r)*Math.sin(ang);
-  svg += `<circle cx="${nx}" cy="${ny}" r="4" fill="#E8A33D"/>`;
-  svg += `<text x="${cx}" y="${cy-4}" text-anchor="middle" fill="#E8EAF0" font-size="20" font-family="Space Grotesk" font-weight="600">${now.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</text>`;
-  svg += `<text x="${cx}" y="${cy+14}" text-anchor="middle" fill="#8B93A7" font-size="10">${logs.length} logged today</text>`;
+  svg += `<circle cx="${nx}" cy="${ny}" r="4" fill="var(--gold)"/>`;
+  svg += `<text x="${cx}" y="${cy-4}" text-anchor="middle" fill="var(--text)" font-size="20" font-family="Space Grotesk" font-weight="600">${now.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'})}</text>`;
+  svg += `<text x="${cx}" y="${cy+14}" text-anchor="middle" fill="var(--muted)" font-size="10">${logs.length} logged today</text>`;
   svg += `</svg>`;
-  document.getElementById('arcWrap').innerHTML = `${svg}<p class="arc-caption">Your 24 hours — tap Activities to log more</p>`;
+  document.getElementById('arcWrap').innerHTML = `<div class="day-orbit">${svg}</div><div class="day-overview"><p class="workspace-eyebrow">TODAY AT A GLANCE</p><h2>Make time for what matters.</h2><p class="arc-caption">Your daily rhythm, one activity at a time.</p><button class="section-link" onclick="goToScreen('activities')">View your activity timeline ↗</button></div>`;
 }
 function arcPath(cx,cy,r,a0,a1,color){
   const toXY = (ang)=>{ const rad=ang*Math.PI/180; return [cx+r*Math.cos(rad), cy+r*Math.sin(rad)]; };
@@ -32,10 +32,10 @@ function arcPath(cx,cy,r,a0,a1,color){
 function renderHeader(){
   const h = new Date().getHours();
   const greeting = h<5?"Still up":h<12?"Good Morning":h<17?"Good Afternoon":h<21?"Good Evening":"Good Night";
-  document.getElementById('greetName').textContent = `${greeting}, ${NAME}`;
+  document.getElementById('greetName').textContent = state.profile.name ? `${greeting}, ${state.profile.name}` : greeting;
   document.getElementById('dateLabel').textContent = new Date().toLocaleDateString([], {weekday:'long', month:'long', day:'numeric'});
   document.getElementById('backBtn').style.display = (currentScreen==='deen') ? 'block' : 'none';
-  document.getElementById('arcWrap').style.display = (currentScreen==='deen') ? 'none' : 'block';
+  document.getElementById('arcWrap').style.display = currentScreen === 'dashboard' ? 'flex' : 'none';
 }
 
 /* ---------- DASHBOARD ---------- */
@@ -50,7 +50,7 @@ function renderDashboard(){
   const mission = mainMissionGoal();
   const forecast = missionForecast(mission);
 
-  let html = '';
+  let html = nextStepsHTML();
   if(act){
     html += `<div class="live-banner">
       <div style="display:flex;align-items:center;gap:10px;">
@@ -77,13 +77,13 @@ function renderDashboard(){
   </div>`;
 
   if(mission){
-    const pct = mission.target ? Math.min(100, Math.round(mission.current/mission.target*100)) : 0;
+    const pct = goalPercent(mission);
     html += `<div class="mission-card">
       <div style="flex-shrink:0;">${circularProgress(pct, 84, 'var(--blue)', pct+'%')}</div>
       <div class="mission-info">
         <div class="mission-label">🎯 Main Mission</div>
-        <div class="mission-name">${mission.name}</div>
-        <div class="mission-nums">${mission.current.toLocaleString()} / ${mission.target.toLocaleString()} PKR</div>
+        <div class="mission-name">${esc(mission.name)}</div>
+        <div class="mission-nums">${esc(goalProgressText(mission))}</div>
         ${forecast && !forecast.done ? `<div class="mission-nums">Save <b style="color:var(--gold);">${Math.ceil(forecast.dailyTarget).toLocaleString()}/day</b> · ${Math.ceil(forecast.weeklyTarget).toLocaleString()}/wk</div>
         <div class="mission-forecast">${forecast.etaText}</div>` : forecast && forecast.done ? `<div class="mission-forecast" style="color:var(--green);">🎉 Goal reached!</div>` : ''}
       </div>
@@ -95,7 +95,7 @@ function renderDashboard(){
     <div class="stat"><div class="stat-label">Mood</div><div class="stat-value">${ci?ci.mood:'—'}<span style="font-size:12px;color:var(--faint);">/10</span></div></div>
     <div class="stat"><div class="stat-label">Prayer</div><div class="stat-value">${prayerCount}<span style="font-size:12px;color:var(--faint);">/5</span></div></div>
     <div class="stat"><div class="stat-label">Sleep (last)</div><div class="stat-value" style="font-size:16px;">${sleepMs!==null?fmtDur(sleepMs):'—'}</div></div>
-    <div class="stat"><div class="stat-label">Savings</div><div class="stat-value mono" style="font-size:16px;">${mission?Math.round(mission.current/mission.target*100)+'%':'—'}</div></div>
+    <div class="stat"><div class="stat-label">Main focus</div><div class="stat-value mono" style="font-size:16px;">${mission?goalPercent(mission)+'%':'—'}</div></div>
     <div class="stat"><div class="stat-label">Study Today</div><div class="stat-value" style="font-size:16px;">${todayStudyHours().toFixed(1)}h</div></div>
   </div>`;
 
@@ -127,8 +127,8 @@ function logRowHTML(l){
   const dur = l.endISO ? fmtDur(new Date(l.endISO)-new Date(l.startISO)) : 'ongoing';
   return `<div class="log-row">
     <div class="log-dot" style="background:${colorFor(l.activity)}"></div>
-    <div class="log-info"><div class="log-act">${l.activity}</div><div class="log-time">${fmtTime(l.startISO)}${l.endISO?' – '+fmtTime(l.endISO):''}</div></div>
-    <div class="log-dur">${dur}</div>
+    <div class="log-info"><div class="log-act">${esc(l.activity)}</div><div class="log-time">${new Date(l.startISO).toLocaleDateString()} · ${fmtTime(l.startISO)}${l.endISO?' – '+fmtTime(l.endISO):''}</div></div>
+    <div class="log-dur">${dur}</div>${l.endISO?`<button class="section-link" onclick="openActivityEditor(\x27${l.id}\x27)" aria-label="Edit ${esc(l.activity)} activity">Edit</button>`:``}
   </div>`;
 }
 

@@ -27,7 +27,7 @@ function renderFinance(){
   if(recent.length===0){ html += `<div class="empty">No transactions yet.</div>`; }
   else recent.forEach(f=>{
     html += `<div class="log-row">
-      <div class="log-info"><div class="log-act">${f.category||f.type}</div><div class="log-time">${f.date}${f.note?' · '+f.note:''}</div></div>
+      <div class="log-info"><div class="log-act">${esc(f.category||f.type)}</div><div class="log-time">${f.date}${f.note?' · '+esc(f.note):''}</div></div>
       <div class="${f.type==='income'?'amount-pos':'amount-neg'}" style="font-weight:600;">${f.type==='income'?'+':'-'}${f.amount.toLocaleString()}</div>
     </div>`;
   });
@@ -37,7 +37,7 @@ function renderFinance(){
   if(state.loans.length===0) html += `<div class="empty">No loans tracked.</div>`;
   else state.loans.forEach(l=>{
     html += `<div class="item-row" onclick="openLoanModal('${l.id}')">
-      <div class="item-top"><span class="item-name">${l.name}</span><span class="badge ${l.settled?'status-done':'status-pending'}">${l.settled?'Settled':(l.type==='given'?'Given':'Received')}</span></div>
+      <div class="item-top"><span class="item-name">${esc(l.name)}</span><span class="badge ${l.settled?'status-done':'status-pending'}">${l.settled?'Settled':(l.type==='given'?'Given':'Received')}</span></div>
       <div class="item-meta">${l.amount.toLocaleString()} PKR · ${l.date}</div>
     </div>`;
   });
@@ -47,8 +47,8 @@ function renderFinance(){
   if(state.recurring.length===0) html += `<div class="empty">No recurring expenses set.</div>`;
   else state.recurring.forEach(r=>{
     html += `<div class="item-row" onclick="openRecurringModal('${r.id}')">
-      <div class="item-top"><span class="item-name">${r.name}</span><span class="faint mono" style="font-size:12px;">${r.amount.toLocaleString()}</span></div>
-      <div class="item-meta">${r.category} · ${r.frequency}</div>
+      <div class="item-top"><span class="item-name">${esc(r.name)}</span><span class="faint mono" style="font-size:12px;">${r.amount.toLocaleString()}</span></div>
+      <div class="item-meta">${esc(r.category)} · ${r.frequency}</div>
     </div>`;
   });
   html += `</div>`;
@@ -83,7 +83,7 @@ async function addFinance(){
   const note = document.getElementById('finNote').value.trim();
   if(!amount || amount<=0){ showToast("Enter a valid amount"); return; }
   state.finance.push({id:uid(), type:window._finType||'income', amount, category, note, date:today()});
-  await save('finance'); closeModal(); showToast("Transaction added"); render();
+  if(!await save('finance'))return; closeModal(); showToast("Transaction added"); render();
 }
 
 function openLoanModal(id){
@@ -113,9 +113,9 @@ async function saveLoan(id){
   const data = { name, type: document.getElementById('loanType').value, amount, notes: document.getElementById('loanNotes').value.trim(), settled: document.getElementById('loanSettled').classList.contains('active'), date: today() };
   if(id){ const existing = state.loans.find(l=>l.id===id); data.date = existing.date; Object.assign(existing, data); }
   else state.loans.push({id:uid(), ...data});
-  await save('loans'); closeModal(); showToast("Saved"); render();
+  if(!await save('loans'))return; closeModal(); showToast("Saved"); render();
 }
-async function deleteLoan(id){ state.loans = state.loans.filter(l=>l.id!==id); await save('loans'); closeModal(); render(); }
+async function deleteLoan(id){ state.loans = state.loans.filter(l=>l.id!==id); if(!await save('loans'))return; closeModal(); render(); }
 
 function openRecurringModal(id){
   const r = id ? state.recurring.find(x=>x.id===id) : null;
@@ -140,8 +140,8 @@ async function saveRecurring(id){
   if(!name || !amount){ showToast("Name and amount required"); return; }
   const data = { name, amount, frequency: document.getElementById('recFreq').value, category: document.getElementById('recCategory').value.trim()||'General' };
   if(id){ Object.assign(state.recurring.find(r=>r.id===id), data); } else state.recurring.push({id:uid(), ...data});
-  await save('recurring'); closeModal(); showToast("Saved"); render();
+  if(!await save('recurring'))return; closeModal(); showToast("Saved"); render();
 }
-async function deleteRecurring(id){ state.recurring = state.recurring.filter(r=>r.id!==id); await save('recurring'); closeModal(); render(); }
+async function deleteRecurring(id){ state.recurring = state.recurring.filter(r=>r.id!==id); if(!await save('recurring'))return; closeModal(); render(); }
 
 /* ---------- ME ---------- */

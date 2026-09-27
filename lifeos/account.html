@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer"><title>Your account · LifeOS</title><link rel="stylesheet" href="css/public.css"><link rel="icon" href="assets/icons8-favicon-50.apng.png"></head>
+<body class="account-page"><div class="site-shell"><header class="site-header"><a class="brand" href="index.html">LifeOS</a><a href="dashboard.html">Local dashboard</a></header>
+<main class="account-card" style="max-width:640px;margin:2rem auto"><h1>Your account</h1><p id="identity">Checking your session…</p><p>Account settings are separate from tracker preferences. The dashboard opens a separate local workspace for each signed-in account; cloud syncing is optional there. Device-only history is never uploaded automatically. Logout retains pending local changes for the same account; sign back in to resume.</p>
+<p id="accountStatus" role="status" tabindex="-1"></p>
+<button type="button" id="retryAccountAction" class="button" hidden>Retry sign out</button>
+<form id="profileForm" hidden><div class="field"><label for="displayName">Display name</label><input id="displayName" maxlength="60" required></div>
+<div class="field"><label for="timezone">Timezone</label><input id="timezone" placeholder="Asia/Karachi" required></div>
+<div class="field"><label for="currency">Currency code</label><input id="currency" pattern="[A-Z]{3}" maxlength="3" required></div>
+<button type="submit" class="button primary">Save cloud profile</button></form>
+<div id="accountActions" hidden><p><button id="exportCloud" class="button">Export cloud data</button> <button id="logout" class="button">Log out</button> <button id="switchAccount" class="button">Switch account</button></p>
+<details><summary>Delete cloud account</summary><p>This permanently deletes your cloud account and cloud records. Your account workspace may remain in this browser, but it cannot be reopened through a deleted account. <a href="dashboard.html">Open the dashboard and download a local backup first</a>.</p>
+<label><input id="deleteBackupConfirm" type="checkbox"> I downloaded a local backup, or I accept losing normal access to this account workspace.</label>
+<label for="deleteConfirm">Type DELETE to confirm</label><input id="deleteConfirm" autocomplete="off"><button id="deleteAccount" class="button">Delete cloud account</button></details></div>
+<a href="login.html" id="loginLink" hidden>Log in</a></main></div><script type="module" src="backend/account-page.js"></script><script type="module" src="native/runtime.js"></script>
+</body></html>

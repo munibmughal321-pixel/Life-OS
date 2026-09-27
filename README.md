@@ -1,29 +1,45 @@
 # LifeOS workspace
 
-Use `lifeos/` for all future application development. `misc/` preserves earlier versions as reference material; it is not a deployable application.
+Use `lifeos/` for application development. `misc/` preserves earlier versions and private local reference material; it is not part of the application or deployment.
 
 ## Folder map
 
-- `lifeos/`: active copy of the feature-rich separated application, plus the existing icon in `assets/`.
-- `misc/separated-baseline/`: untouched original of the selected baseline.
-- `misc/original-single-file/`: original `lifeos_v3.html`.
-- `misc/intro-login-prototype/`: earlier welcome/login/dashboard prototype, archived intact.
-- `misc/node-server-prototype/`: earlier Node version, including its existing Git history and local files, archived intact.
+- `lifeos/`: active HTML, CSS and JavaScript application, Supabase modules/migrations, Android/iOS projects, tests and Vite build.
+- `docs/`: product requirements, architecture, phase guides and handoff evidence.
+- `misc/separated-baseline/`: untouched copy of the selected baseline.
+- `misc/original-single-file/`: original single-file application.
+- `misc/intro-login-prototype/`: earlier introduction/login prototype.
+- `misc/node-server-prototype/`: earlier Node version and its separate history/private runtime files.
 
 ## Current status
 
-This preparation changes organization and documentation only. Application HTML, CSS, and JavaScript have not been changed. The workspace root now continues the existing Life-OS Git history, with the active application under lifeos/. No build system or deployment has been configured.
+Phases 1 through 4 have browser implementations:
 
-The active application still depends on the nonstandard `window.storage` API. Ordinary browsers do not provide this API, so reliable saving requires a follow-up fix. Its favicon link still points to `icons8-favicon-50.apng`; the preserved asset is now `assets/icons8-favicon-50.apng.png`. The link repair is also deferred. Opening the HTML is not proof that persistence works.
+- Responsive tracker UI and all six modules.
+- Validated IndexedDB persistence, backup/recovery and offline app shell.
+- Supabase accounts, private profiles/records and account management.
+- Separate device/account workspaces with explicit opt-in cloud synchronization, revisions, tombstones and conflict review.
 
-## Private archive and hosting
+Phase 5 adds Capacitor native adapters and Android/iOS source. The Android debug APK has been built and verified; physical-phone testing and iOS compilation remain outstanding. Phase 6 includes Netlify configuration and release-artifact checks; hosted deployment and public release remain pending. A GitHub Actions workflow is preserved locally, but uploading it requires the GitHub login to grant workflow permission.
 
-The Node archive contains local `auth.json` and `data.json`, and a nested `.git` directory. Preserve them locally; do not upload or deploy this archive. Its server does not adequately protect data endpoints or private files. The intro/login prototype's browser-local password storage is not production authentication.
+Run and test from `D:\Munib\LifeOS app\lifeos`:
 
-The root `.gitignore` excludes `misc/`, local credentials/data, dependencies, and build output from this repository. The archive folders listed above are local-only and intentionally absent from GitHub; earlier committed code remains accessible through Git history. Ignore rules do not remove files already recorded in existing Git history, and they do not control what a hosting provider publishes.
+```powershell
+npm run dev
+npm run build
+npm test
+```
 
-For future hosting, use `lifeos/` as the application base and publish only its generated `dist/` directory once the build pipeline exists. Never publish this workspace root or `misc/`. There is no deployable build yet.
+Development opens at http://127.0.0.1:4183. Production preview uses `npm run preview` and http://127.0.0.1:4184. These origins have separate browser storage; export/import a backup when intentionally moving data between them.
 
-## Next step
+See [Phase 2](docs/PHASE2.md), [Phase 3](docs/PHASE3.md), [Phase 4](docs/PHASE4.md), [Phase 5](docs/PHASE5.md), and [Phase 6](docs/PHASE6.md) for setup, recovery, native builds and acceptance boundaries.
 
-Repair browser persistence and the favicon reference, then verify existing workflows locally before adding the production build and cloud integrations. The archived Node repository remains separate; the root repository preserves its existing commits without rewriting history.
+## Private archive and deployment
+
+The archived Node version contains local data/auth files and old Git history. Preserve it locally. The root `.gitignore` excludes archives, credentials, Supabase CLI metadata, dependencies, build output, screenshots and private exports.
+
+The root `netlify.toml` sets base `lifeos`, build command `npm run build:deploy`, and publish directory `dist`. Configure the LifeOS project URL and publishable key in the hosting environment before building. Never publish this workspace root or `misc`. No production deployment has been performed from this work.
+
+## Next work
+
+Test the Android debug APK on a real phone, complete a real two-profile/device Supabase sync drill, verify real confirmation/reset emails and redirect allowlists, configure public SMTP, and review the leaked-password-protection warning. iOS compilation requires Mac/Xcode access. Follow Phase 6 for a controlled web preview and the remaining public-release gates.

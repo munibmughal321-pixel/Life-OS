@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="referrer" content="no-referrer">
+<title>Check your email · LifeOS</title>
+<link rel="icon" href="assets/icons8-favicon-50.apng.png"><link rel="stylesheet" href="css/public.css"><link rel="stylesheet" href="css/experience.css">
+</head><body class="account-page"><div class="site-shell">
+<header class="site-header"><a class="brand" href="index.html">LifeOS</a><a href="login.html">Log in</a></header>
+<main class="account-layout"><section class="account-card" aria-labelledby="verificationTitle">
+<p class="eyebrow">ONE MORE STEP</p><h1 id="verificationTitle">Check your email.</h1>
+<p>Open the confirmation link in your inbox or spam folder. Use the same browser where you signed up. Once your verified session is ready, LifeOS will open automatically.</p>
+<p id="verificationStatus" class="form-status" role="status" aria-live="polite"></p>
+<form id="resendForm"><div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" maxlength="254" required></div>
+<button id="resendEmail" type="submit" class="button primary full">Resend verification email</button></form>
+<p id="resendTimer" role="status"></p>
+<button id="checkVerification" class="button full" type="button">I verified my email — check again</button>
+<p>Verified on another browser or device? <a href="login.html">Log in here</a>.</p>
+<p>Wrong address? <a href="signup.html">Return to signup</a>.</p>
+</section></main></div><script type="module" src="backend/verify-email.js"></script><script type="module" src="native/runtime.js"></script>
+</body></html>
